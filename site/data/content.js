@@ -202,6 +202,14 @@ window.SCP = /* DATA_START */
       "pricePrefix": "$",
       "image": "assets/images/gallery/portrait/portrait-cover.jpg",
       "description": "Perfect for capturing everyday moments and meaningful connections. Individuals, families, friends, and couples welcome. The goal is natural, relaxed images that reflect genuine personality and the relationships that matter most."
+    },
+    {
+      "id": "test-1",
+      "name": "Test 1",
+      "price": "100",
+      "pricePrefix": "$",
+      "image": "",
+      "description": ""
     }
   ],
   "packages": [
