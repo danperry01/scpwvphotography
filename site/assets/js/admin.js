@@ -55,8 +55,9 @@
       (type === 'success' ? ' success' : type === 'error' ? ' error' : '');
     msgEl.textContent = msg;
     banner.style.display = 'block';
-    if (type === 'success' || type === 'error') {
-      setTimeout(function () { banner.style.display = 'none'; }, 4000);
+    // Only auto-dismiss success; errors stay until next action
+    if (type === 'success') {
+      setTimeout(function () { banner.style.display = 'none'; }, 5000);
     }
   }
 
