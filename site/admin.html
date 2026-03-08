@@ -203,7 +203,14 @@
       <div class="admin-tab-content" id="tab-services">
         <div class="admin-section">
           <h2 class="admin-section__title">Services</h2>
-          <p style="color: var(--color-text-muted); margin-bottom:1.5rem; font-size:0.9rem;">Services are linked to gallery categories. Adding or removing a category automatically creates or removes the corresponding service card on the home page.</p>
+          <p style="color: var(--color-text-muted); margin-bottom:1.5rem; font-size:0.9rem;">These cards appear on the home page. Add, edit, or remove services independently of gallery categories.</p>
+          <div class="admin-form-row" style="max-width: 420px; flex-wrap: nowrap; margin-bottom: 1.5rem;">
+            <div class="form-group" style="flex: 1; margin-bottom: 0;">
+              <input type="text" id="new-service-name" placeholder="e.g. Graduation Session">
+            </div>
+            <button class="btn btn--primary" id="add-service-btn" style="align-self: flex-end; white-space: nowrap;">Add Service</button>
+          </div>
+          <p class="form-error" id="service-add-error" style="margin-bottom: 1rem;"></p>
           <div id="admin-services-grid" class="admin-services-grid"></div>
         </div>
       </div>

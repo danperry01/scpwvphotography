@@ -1384,7 +1384,7 @@
     var services = (window.SCP && window.SCP.services) || [];
 
     if (services.length === 0) {
-      grid.innerHTML = '<p style="color: var(--color-text-muted); font-size: 0.9rem;">No services defined. Add a gallery category to create one.</p>';
+      grid.innerHTML = '<p style="color: var(--color-text-muted); font-size: 0.9rem;">No services yet. Add one using the form above.</p>';
       return;
     }
 
@@ -1419,7 +1419,10 @@
         '      <label style="font-size:0.75rem; text-transform:uppercase; letter-spacing:0.04em;">Description</label>',
         '      <textarea id="svc-desc-' + idx + '" rows="3" style="resize:vertical;">' + escapeHtml(service.description || '') + '</textarea>',
         '    </div>',
-        '    <button class="btn btn--primary" data-svc-save="' + idx + '" style="width:100%; font-size:0.85rem; padding:0.5rem 1rem;">Save Details</button>',
+        '    <div style="display:flex; gap:0.5rem;">',
+        '      <button class="btn btn--primary" data-svc-save="' + idx + '" style="flex:1; font-size:0.85rem; padding:0.5rem 1rem;">Save</button>',
+        '      <button class="btn btn--outline-dark" data-svc-remove="' + escapeHtml(service.id) + '" style="font-size:0.85rem; padding:0.5rem 0.75rem; border-color:#dc2626; color:#dc2626;">Remove</button>',
+        '    </div>',
         '  </div>',
         '</div>'
       ].join('\n');
@@ -1446,6 +1449,12 @@
       btn.addEventListener('click', function () {
         var idx = parseInt(btn.getAttribute('data-svc-save'), 10);
         saveServiceDetails(idx, btn);
+      });
+    });
+
+    grid.querySelectorAll('[data-svc-remove]').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        removeService(btn.getAttribute('data-svc-remove'));
       });
     });
   }
@@ -1534,6 +1543,83 @@
     }
   }
 
+  async function addService() {
+    var nameInput = document.getElementById('new-service-name');
+    var name = nameInput ? nameInput.value.trim() : '';
+    if (!name) { showError('service-add-error', 'Please enter a service name.'); return; }
+
+    var id = slugify(name);
+    if (!id) { showError('service-add-error', 'Invalid service name.'); return; }
+
+    var services = (window.SCP && window.SCP.services) || [];
+    if (services.find(function (s) { return s.id === id; })) {
+      showError('service-add-error', 'A service with that name already exists.');
+      return;
+    }
+
+    hideError('service-add-error');
+    showBanner('Adding service...', 'loading');
+
+    try {
+      var result = await readContentFile();
+      var data   = result.data;
+      var sha    = result.sha;
+
+      if (!data.services) data.services = [];
+      var newService = { id: id, name: name, price: '100', pricePrefix: '$', image: '', description: '' };
+      data.services.push(newService);
+
+      await writeContentFile(data, sha, 'Add service: ' + name);
+
+      if (!window.SCP.services) window.SCP.services = [];
+      window.SCP.services.push(newService);
+
+      nameInput.value = '';
+      showBanner('Service added. Site deploying...', 'success');
+      renderServicesGrid();
+    } catch (err) {
+      console.error(err);
+      showBanner('Error: ' + err.message, 'error');
+      showError('service-add-error', err.message);
+    }
+  }
+
+  async function removeService(id) {
+    var services = (window.SCP && window.SCP.services) || [];
+    var svc = services.find(function (s) { return s.id === id; });
+    var label = svc ? svc.name : id;
+    if (!confirm('Remove service "' + label + '"? This only removes it from the site — no photos are deleted.')) return;
+
+    showBanner('Removing service...', 'loading');
+    try {
+      var result = await readContentFile();
+      var data   = result.data;
+      var sha    = result.sha;
+
+      if (data.services) data.services = data.services.filter(function (s) { return s.id !== id; });
+
+      await writeContentFile(data, sha, 'Remove service: ' + id);
+
+      if (window.SCP.services) window.SCP.services = window.SCP.services.filter(function (s) { return s.id !== id; });
+
+      showBanner('Service removed. Site deploying...', 'success');
+      renderServicesGrid();
+    } catch (err) {
+      console.error(err);
+      showBanner('Error: ' + err.message, 'error');
+    }
+  }
+
+  function initServicesAdmin() {
+    var addBtn = document.getElementById('add-service-btn');
+    var input  = document.getElementById('new-service-name');
+    if (addBtn) addBtn.addEventListener('click', addService);
+    if (input)  input.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter') addService();
+    });
+    renderServicesGrid();
+  }
+
   /* ============================================================
      GALLERY CATEGORIES
      ============================================================ */
@@ -1607,28 +1693,16 @@
       if (!data.gallery.categories) data.gallery.categories = [];
       data.gallery.categories.push({ id: id, label: label });
 
-      // Create a matching service entry if one doesn't already exist
-      if (!data.services) data.services = [];
-      if (!data.services.find(function (s) { return s.id === id; })) {
-        data.services.push({ id: id, name: label + ' Session', price: '100', pricePrefix: '$', image: '', description: '' });
-      }
-
       await writeContentFile(data, sha, 'Add gallery category: ' + label);
 
       if (!window.SCP.gallery) window.SCP.gallery = {};
       if (!window.SCP.gallery.categories) window.SCP.gallery.categories = [];
       window.SCP.gallery.categories.push({ id: id, label: label });
 
-      if (!window.SCP.services) window.SCP.services = [];
-      if (!window.SCP.services.find(function (s) { return s.id === id; })) {
-        window.SCP.services.push({ id: id, name: label + ' Session', price: '100', pricePrefix: '$', image: '', description: '' });
-      }
-
       input.value = '';
       showBanner('Category added. Site deploying...', 'success');
       renderCategoriesAdmin();
       populateCategorySelects();
-      renderServicesGrid();
     } catch (err) {
       console.error(err);
       showBanner('Error: ' + err.message, 'error');
@@ -1657,22 +1731,13 @@
 
       data.gallery.categories = data.gallery.categories.filter(function (c) { return c.id !== id; });
 
-      // Remove the matching service
-      if (data.services) {
-        data.services = data.services.filter(function (s) { return s.id !== id; });
-      }
-
       await writeContentFile(data, sha, 'Remove gallery category: ' + id);
 
       window.SCP.gallery.categories = window.SCP.gallery.categories.filter(function (c) { return c.id !== id; });
-      if (window.SCP.services) {
-        window.SCP.services = window.SCP.services.filter(function (s) { return s.id !== id; });
-      }
 
       showBanner('Category removed. Site deploying...', 'success');
       renderCategoriesAdmin();
       populateCategorySelects();
-      renderServicesGrid();
     } catch (err) {
       console.error(err);
       showBanner('Error: ' + err.message, 'error');
@@ -1711,12 +1776,12 @@
     initTabs();
     initHomeHighlights();
     initCategoriesAdmin();
+    initServicesAdmin();
     initGalleryUpload();
     initCollectionsTab();
     initPhotoEditModal();
     renderGalleryGrid();
     renderCollectionsList();
-    renderServicesGrid();
   }
 
   /* ============================================================
