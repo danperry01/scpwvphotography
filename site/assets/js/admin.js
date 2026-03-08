@@ -1210,9 +1210,19 @@
     }
     if (colUploadQueue.length === 0) return;
 
-    var uploadBtn = document.getElementById('upload-col-photos-btn');
+    var uploadBtn   = document.getElementById('upload-col-photos-btn');
+    var statusEl    = document.getElementById('col-upload-status');
+    var total       = colUploadQueue.length;
+
+    function setColStatus(msg, isError) {
+      if (!statusEl) return;
+      statusEl.textContent = msg;
+      statusEl.className   = 'upload-status' + (isError ? ' upload-status--error' : ' upload-status--ok');
+      statusEl.style.display = msg ? 'block' : 'none';
+    }
+
     uploadBtn.disabled = true;
-    showBanner('Uploading ' + colUploadQueue.length + ' photo(s)...', 'loading');
+    setColStatus('');
 
     try {
       var newPhotos = [];
@@ -1228,6 +1238,7 @@
         var filename = baseName + '-' + Date.now() + '-' + i + ext;
         var path     = 'site/assets/images/collections/' + currentCollectionId + '/' + filename;
 
+        uploadBtn.textContent = 'Step ' + (i + 1) + '/' + (total + 1) + ': Uploading photo ' + (i + 1) + ' of ' + total + '\u2026';
         await uploadImage(path, file);
 
         newPhotos.push({
@@ -1237,6 +1248,7 @@
       }
 
       // Write to content.js
+      uploadBtn.textContent = 'Step ' + (total + 1) + '/' + (total + 1) + ': Saving changes\u2026';
       var result = await readContentFile();
       var data   = result.data;
       var sha    = result.sha;
@@ -1266,18 +1278,22 @@
       }
 
       showBanner('Photos uploaded. Site deploying...', 'success');
+      setColStatus('\u2713 ' + total + ' photo' + (total !== 1 ? 's' : '') + ' saved! The site is rebuilding \u2014 changes will appear in about 2 minutes.');
 
       // Clear queue
       colUploadQueue = [];
       document.getElementById('col-upload-queue').innerHTML = '';
       uploadBtn.style.display = 'none';
       uploadBtn.disabled = false;
+      uploadBtn.textContent = 'Upload Selected Photos';
 
       renderCollectionPhotos(currentCollectionId);
     } catch (err) {
       console.error(err);
       showBanner('Error: ' + err.message, 'error');
+      setColStatus('Upload failed: ' + err.message, true);
       uploadBtn.disabled = false;
+      uploadBtn.textContent = 'Upload Selected Photos';
     }
   }
 
