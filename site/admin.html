@@ -77,6 +77,13 @@
       <!-- Gallery Tab -->
       <div class="admin-tab-content active" id="tab-gallery">
         <div class="admin-section">
+          <h2 class="admin-section__title">Home Page Highlights</h2>
+          <p style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 1.5rem;">These 4 photos appear in the "Recent Work" section on the home page. Click a slot to pick a photo, use arrows to reorder.</p>
+          <div id="home-highlights-grid" class="home-highlights-grid"></div>
+          <p class="upload-status" id="highlights-status" style="display:none; margin-top:0.75rem;"></p>
+        </div>
+
+        <div class="admin-section">
           <h2 class="admin-section__title">Add Photo to Gallery</h2>
           <div class="admin-upload-area" id="gallery-upload-area">
             <input type="file" id="gallery-file-input" accept="image/*" style="display:none">
@@ -192,6 +199,17 @@
         </div>
       </div>
 
+    </div>
+  </div>
+
+  <!-- Photo Picker Modal -->
+  <div id="photo-picker-modal" class="admin-modal" style="display:none" role="dialog" aria-modal="true">
+    <div class="admin-modal__box admin-modal__box--wide">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.25rem;">
+        <h3 class="admin-modal__title" style="margin:0">Pick a Photo</h3>
+        <button class="btn btn--outline-dark" id="photo-picker-cancel" style="font-size:0.85rem; padding:0.4rem 1rem;">Cancel</button>
+      </div>
+      <div id="photo-picker-grid" class="admin-photo-grid"></div>
     </div>
   </div>
 

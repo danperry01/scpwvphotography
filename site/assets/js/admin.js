@@ -269,6 +269,174 @@
   }
 
   /* ============================================================
+     HOME PAGE HIGHLIGHTS
+     ============================================================ */
+  var homeHighlights  = []; // ordered array of photo src strings (max 4)
+  var pickerSlotIndex = null;
+
+  function initHomeHighlights() {
+    homeHighlights = ((window.SCP && window.SCP.gallery && window.SCP.gallery.homePage) || []).slice(0, 4);
+    renderHomeHighlights();
+
+    var cancelBtn = document.getElementById('photo-picker-cancel');
+    var modal     = document.getElementById('photo-picker-modal');
+    if (cancelBtn) cancelBtn.addEventListener('click', closePhotoPicker);
+    if (modal) {
+      modal.addEventListener('click', function (e) {
+        if (e.target === modal) closePhotoPicker();
+      });
+    }
+  }
+
+  function renderHomeHighlights() {
+    var grid = document.getElementById('home-highlights-grid');
+    if (!grid) return;
+
+    var photos   = (window.SCP && window.SCP.gallery && window.SCP.gallery.photos) || [];
+    var photoMap = {};
+    photos.forEach(function (p) { photoMap[p.src] = p; });
+
+    var html = '';
+    for (var i = 0; i < 4; i++) {
+      var src   = homeHighlights[i];
+      var photo = src ? photoMap[src] : null;
+
+      if (photo) {
+        var canLeft  = i > 0;
+        var canRight = i < homeHighlights.length - 1;
+        html += [
+          '<div class="home-highlight-slot">',
+          '  <div class="home-highlight-slot__num">' + (i + 1) + '</div>',
+          '  <img src="' + escapeHtml(photo.src) + '" alt="' + escapeHtml(photo.alt) + '" class="home-highlight-slot__img">',
+          '  <div class="home-highlight-slot__actions">',
+          canLeft  ? '<button class="hh-arrow" data-slot="' + i + '" data-dir="-1" title="Move left">&#8592;</button>' : '<span class="hh-arrow-placeholder"></span>',
+          canRight ? '<button class="hh-arrow" data-slot="' + i + '" data-dir="1"  title="Move right">&#8594;</button>' : '<span class="hh-arrow-placeholder"></span>',
+          '    <button class="hh-change" data-slot="' + i + '">Change</button>',
+          '    <button class="hh-remove" data-slot="' + i + '" title="Remove">&times;</button>',
+          '  </div>',
+          '</div>'
+        ].join('\n');
+      } else {
+        html += [
+          '<div class="home-highlight-slot home-highlight-slot--empty">',
+          '  <div class="home-highlight-slot__num">' + (i + 1) + '</div>',
+          '  <button class="hh-add" data-slot="' + i + '">',
+          '    <span style="font-size:1.75rem; line-height:1;">+</span>',
+          '    <span>Add Photo</span>',
+          '  </button>',
+          '</div>'
+        ].join('\n');
+      }
+    }
+
+    grid.innerHTML = html;
+
+    grid.querySelectorAll('.hh-add, .hh-change').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        openPhotoPicker(parseInt(btn.getAttribute('data-slot'), 10));
+      });
+    });
+
+    grid.querySelectorAll('.hh-remove').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        homeHighlights.splice(parseInt(btn.getAttribute('data-slot'), 10), 1);
+        renderHomeHighlights();
+        saveHomeHighlights();
+      });
+    });
+
+    grid.querySelectorAll('.hh-arrow').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var slot = parseInt(btn.getAttribute('data-slot'), 10);
+        var dir  = parseInt(btn.getAttribute('data-dir'), 10);
+        var tmp  = homeHighlights[slot];
+        homeHighlights[slot]       = homeHighlights[slot + dir];
+        homeHighlights[slot + dir] = tmp;
+        renderHomeHighlights();
+        saveHomeHighlights();
+      });
+    });
+  }
+
+  function openPhotoPicker(slotIndex) {
+    pickerSlotIndex = slotIndex;
+    var modal = document.getElementById('photo-picker-modal');
+    var grid  = document.getElementById('photo-picker-grid');
+    if (!modal || !grid) return;
+
+    var photos = ((window.SCP && window.SCP.gallery && window.SCP.gallery.photos) || [])
+      .filter(function (p) { return p.active !== false; });
+
+    var html = '';
+    photos.forEach(function (photo) {
+      var isSelected = homeHighlights.indexOf(photo.src) !== -1;
+      html += [
+        '<div class="admin-photo-item photo-picker-item' + (isSelected ? ' photo-picker-item--selected' : '') + '" data-src="' + escapeHtml(photo.src) + '">',
+        '  <img src="' + escapeHtml(photo.src) + '" alt="' + escapeHtml(photo.alt) + '" loading="lazy">',
+        '  <div class="admin-photo-item__label">' + escapeHtml(photo.alt || photo.src) + '</div>',
+        isSelected ? '  <div class="photo-picker-check">&#10003;</div>' : '',
+        '</div>'
+      ].filter(Boolean).join('\n');
+    });
+
+    grid.innerHTML = html || '<p style="color:var(--color-text-muted);">No photos in gallery yet.</p>';
+
+    grid.querySelectorAll('.photo-picker-item').forEach(function (item) {
+      item.addEventListener('click', function () {
+        var src = item.getAttribute('data-src');
+        // Remove if already in another slot
+        var existing = homeHighlights.indexOf(src);
+        if (existing !== -1) homeHighlights.splice(existing, 1);
+        // Place at target slot
+        homeHighlights.splice(pickerSlotIndex, 0, src);
+        homeHighlights = homeHighlights.slice(0, 4);
+        closePhotoPicker();
+        renderHomeHighlights();
+        saveHomeHighlights();
+      });
+    });
+
+    modal.style.display = 'flex';
+  }
+
+  function closePhotoPicker() {
+    var modal = document.getElementById('photo-picker-modal');
+    if (modal) modal.style.display = 'none';
+    pickerSlotIndex = null;
+  }
+
+  async function saveHomeHighlights() {
+    var statusEl = document.getElementById('highlights-status');
+    try {
+      var result = await readContentFile();
+      var data   = result.data;
+      var sha    = result.sha;
+
+      if (!data.gallery) data.gallery = {};
+      data.gallery.homePage = homeHighlights.slice();
+
+      await writeContentFile(data, sha, 'Update home page highlights');
+
+      if (!window.SCP.gallery) window.SCP.gallery = {};
+      window.SCP.gallery.homePage = homeHighlights.slice();
+
+      if (statusEl) {
+        statusEl.textContent = '✓ Home page updated. Changes appear in ~2 minutes.';
+        statusEl.className   = 'upload-status upload-status--ok';
+        statusEl.style.display = 'block';
+        setTimeout(function () { statusEl.style.display = 'none'; }, 5000);
+      }
+    } catch (err) {
+      console.error(err);
+      if (statusEl) {
+        statusEl.textContent = 'Error saving: ' + err.message;
+        statusEl.className   = 'upload-status upload-status--error';
+        statusEl.style.display = 'block';
+      }
+    }
+  }
+
+  /* ============================================================
      GALLERY TAB
      ============================================================ */
   var gallerySelectedFile = null;
@@ -1234,6 +1402,7 @@
      ============================================================ */
   function initAdmin() {
     initTabs();
+    initHomeHighlights();
     initGalleryUpload();
     initCollectionsTab();
     initPhotoEditModal();

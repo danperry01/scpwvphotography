@@ -117,9 +117,17 @@
     if (!container) return;
     if (!window.SCP || !window.SCP.gallery || !window.SCP.gallery.photos) return;
 
-    var featured = window.SCP.gallery.photos.filter(function (p) {
-      return p.featured === true && p.active !== false;
-    }).slice(0, 4);
+    var homePage = window.SCP.gallery.homePage;
+    var featured;
+    if (homePage && homePage.length > 0) {
+      var photoMap = {};
+      window.SCP.gallery.photos.forEach(function (p) { photoMap[p.src] = p; });
+      featured = homePage.map(function (src) { return photoMap[src]; }).filter(Boolean).slice(0, 4);
+    } else {
+      featured = window.SCP.gallery.photos.filter(function (p) {
+        return p.featured === true && p.active !== false;
+      }).slice(0, 4);
+    }
 
     if (featured.length === 0) return;
 
