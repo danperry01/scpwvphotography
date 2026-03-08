@@ -134,6 +134,9 @@ window.SCP = /* DATA_START */
         "category": "nature",
         "featured": false
       }
+    ],
+    "homePage": [
+      "assets/images/gallery/sports/sports-01.jpg"
     ]
   },
   "services": [
