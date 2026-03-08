@@ -75,7 +75,8 @@
     );
     if (!res.ok) throw new Error('Failed to read content file: ' + res.status);
     var json = await res.json();
-    var raw = atob(json.content.replace(/\n/g, ''));
+    var bytes = Uint8Array.from(atob(json.content.replace(/\n/g, '')), function (c) { return c.charCodeAt(0); });
+    var raw = new TextDecoder('utf-8').decode(bytes);
     var match = raw.match(/\/\* DATA_START \*\/\s*([\s\S]*?)\s*\/\* DATA_END \*\//);
     if (!match) throw new Error('Could not parse content.js format');
     return { data: JSON.parse(match[1]), sha: json.sha };
