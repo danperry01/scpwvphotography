@@ -1,0 +1,568 @@
+/* ============================================================
+   ADMIN BODY
+   ============================================================ */
+.admin-body {
+  background: var(--color-bg);
+  min-height: 100vh;
+  font-family: var(--font-sans);
+}
+
+/* ============================================================
+   ADMIN GATE (password / token screens)
+   ============================================================ */
+.admin-gate {
+  position: fixed;
+  inset: 0;
+  background: rgba(13, 27, 42, 0.92);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.admin-gate__box {
+  background: var(--color-white);
+  border-radius: var(--radius-lg);
+  padding: 2.5rem;
+  width: 100%;
+  max-width: 440px;
+  box-shadow: var(--shadow-lg);
+}
+
+.admin-gate__logo {
+  height: 36px;
+  display: block;
+  margin-bottom: 1.5rem;
+}
+
+.admin-gate__title {
+  font-family: var(--font-serif);
+  color: var(--color-navy);
+  font-size: 1.6rem;
+  margin-bottom: 1.5rem;
+}
+
+/* ============================================================
+   ADMIN HEADER
+   ============================================================ */
+.admin-header {
+  background: var(--color-navy);
+  padding: 0.75rem 1.5rem;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.admin-header__inner {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.admin-header__logo {
+  height: 28px;
+  opacity: 0.9;
+  display: block;
+}
+
+.admin-header__title {
+  color: white;
+  font-size: 0.9rem;
+  font-weight: 600;
+  flex: 1;
+}
+
+.admin-header__actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.admin-header__actions .btn--outline-dark {
+  border-color: rgba(255, 255, 255, 0.4);
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.admin-header__actions .btn--outline-dark:hover {
+  background-color: rgba(255, 255, 255, 0.15);
+  color: white;
+  border-color: rgba(255, 255, 255, 0.7);
+}
+
+/* ============================================================
+   ADMIN CONTENT
+   ============================================================ */
+.admin-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1.5rem 3rem;
+}
+
+/* ============================================================
+   DEPLOY BANNER
+   ============================================================ */
+.deploy-banner {
+  background: var(--color-navy);
+  color: white;
+  text-align: center;
+  padding: 0.75rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  margin: 0 -1.5rem 0;
+}
+
+.deploy-banner.success {
+  background: #16a34a;
+}
+
+.deploy-banner.error {
+  background: #dc2626;
+}
+
+/* ============================================================
+   ADMIN TABS
+   ============================================================ */
+.admin-tabs {
+  display: flex;
+  gap: 0;
+  border-bottom: 2px solid var(--color-border);
+  margin: 1.5rem 0 0;
+  position: sticky;
+  top: 54px;
+  background: var(--color-bg);
+  z-index: 50;
+  padding-top: 0.5rem;
+}
+
+.admin-tab {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  background: none;
+  font-family: var(--font-sans);
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -2px;
+  transition: color var(--transition), border-color var(--transition);
+}
+
+.admin-tab:hover {
+  color: var(--color-accent);
+}
+
+.admin-tab.active {
+  color: var(--color-accent);
+  border-bottom-color: var(--color-accent);
+}
+
+.admin-tab-content {
+  display: none;
+  padding-top: 2rem;
+}
+
+.admin-tab-content.active {
+  display: block;
+}
+
+/* ============================================================
+   ADMIN SECTION
+   ============================================================ */
+.admin-section {
+  background: white;
+  border-radius: var(--radius-lg);
+  padding: 2rem;
+  margin-bottom: 1.5rem;
+  box-shadow: var(--shadow);
+}
+
+.admin-section__title {
+  font-family: var(--font-serif);
+  color: var(--color-navy);
+  font-size: 1.3rem;
+  margin-bottom: 1.5rem;
+}
+
+/* ============================================================
+   UPLOAD AREA
+   ============================================================ */
+.admin-upload-area {
+  border: 2px dashed var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 2rem;
+  text-align: center;
+  cursor: pointer;
+  transition: border-color var(--transition), background-color var(--transition);
+  margin-bottom: 1rem;
+}
+
+.admin-upload-area:hover {
+  border-color: var(--color-accent);
+  background-color: rgba(224, 123, 42, 0.03);
+}
+
+.admin-upload-area.dragover {
+  border-color: var(--color-accent);
+  background-color: rgba(224, 123, 42, 0.06);
+}
+
+.upload-placeholder p {
+  color: var(--color-text-muted);
+  margin: 0;
+}
+
+/* ============================================================
+   ADMIN FORM ROW
+   ============================================================ */
+.admin-form-row {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.admin-form-row .form-group {
+  flex: 1;
+  min-width: 140px;
+}
+
+/* ============================================================
+   ADMIN PHOTO GRID
+   ============================================================ */
+.admin-photo-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 0.75rem;
+}
+
+.admin-photo-item {
+  position: relative;
+  border-radius: var(--radius);
+  overflow: hidden;
+  aspect-ratio: 1;
+  background: var(--color-bg);
+}
+
+.admin-photo-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.admin-photo-item__remove {
+  position: absolute;
+  top: 0.25rem;
+  right: 0.25rem;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: rgba(220, 38, 38, 0.85);
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity var(--transition);
+  padding: 0;
+  line-height: 1;
+}
+
+.admin-photo-item:hover .admin-photo-item__remove {
+  opacity: 1;
+}
+
+.admin-photo-item__label {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.6);
+  color: white;
+  font-size: 0.65rem;
+  padding: 0.2rem 0.35rem;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+/* ============================================================
+   COLLECTIONS LIST
+   ============================================================ */
+.admin-collections-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.admin-collection-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 1.25rem;
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  cursor: pointer;
+  transition: border-color var(--transition);
+  background: white;
+}
+
+.admin-collection-item:hover {
+  border-color: var(--color-accent);
+}
+
+.admin-collection-item__cover {
+  width: 60px;
+  height: 60px;
+  border-radius: var(--radius);
+  object-fit: cover;
+  background: var(--color-bg);
+  flex-shrink: 0;
+}
+
+.admin-collection-item__cover-placeholder {
+  width: 60px;
+  height: 60px;
+  border-radius: var(--radius);
+  background: var(--color-bg);
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-text-muted);
+  font-size: 0.7rem;
+}
+
+.admin-collection-item__info {
+  flex: 1;
+}
+
+.admin-collection-item__name {
+  font-weight: 600;
+  color: var(--color-navy);
+  font-size: 0.95rem;
+}
+
+.admin-collection-item__meta {
+  color: var(--color-text-muted);
+  font-size: 0.8rem;
+  margin-top: 0.2rem;
+}
+
+.admin-collection-item__badge {
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 0.2rem 0.5rem;
+  border-radius: 100px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.badge-public {
+  background: rgba(22, 163, 74, 0.12);
+  color: #16a34a;
+}
+
+.badge-private {
+  background: rgba(100, 116, 139, 0.12);
+  color: var(--color-text-muted);
+}
+
+/* ============================================================
+   SERVICES ADMIN GRID
+   ============================================================ */
+.admin-services-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 1.25rem;
+}
+
+.admin-service-card {
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.admin-service-card__img {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+  display: block;
+}
+
+.admin-service-card__body {
+  padding: 1rem;
+}
+
+.admin-service-card__name {
+  font-weight: 600;
+  color: var(--color-navy);
+  font-size: 0.9rem;
+  margin-bottom: 0.75rem;
+}
+
+/* ============================================================
+   COLLECTIONS PAGE — PUBLIC FACING
+   ============================================================ */
+.collections-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem;
+}
+
+.collection-card {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+  background: white;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  transition: transform var(--transition), box-shadow var(--transition);
+}
+
+.collection-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+}
+
+.collection-card__img-wrap {
+  overflow: hidden;
+  height: 220px;
+}
+
+.collection-card__img-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.3s ease;
+}
+
+.collection-card:hover .collection-card__img-wrap img {
+  transform: scale(1.04);
+}
+
+.collection-card__body {
+  padding: 1.25rem;
+}
+
+.collection-card__name {
+  font-family: var(--font-serif);
+  color: var(--color-navy);
+  font-size: 1.1rem;
+  margin-bottom: 0.25rem;
+}
+
+.collection-card__date {
+  color: var(--color-text-muted);
+  font-size: 0.85rem;
+  margin-bottom: 0.25rem;
+}
+
+.collection-card__count {
+  color: var(--color-accent);
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+/* ============================================================
+   COLLECTION VIEW — PUBLIC FACING
+   ============================================================ */
+.collection-view-header {
+  text-align: center;
+  padding: 2rem 0 3rem;
+}
+
+.collection-view-header h1 {
+  font-family: var(--font-serif);
+  font-size: clamp(1.8rem, 4vw, 2.5rem);
+  color: var(--color-navy);
+}
+
+/* ============================================================
+   UPLOAD QUEUE ALT INPUT
+   ============================================================ */
+.upload-queue-item {
+  position: relative;
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: var(--color-bg);
+}
+
+.upload-queue-item img {
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+  display: block;
+}
+
+.upload-queue-item__alt {
+  padding: 0.35rem 0.5rem;
+  font-size: 0.72rem;
+  width: 100%;
+  border: none;
+  border-top: 1px solid var(--color-border);
+  font-family: var(--font-sans);
+  color: var(--color-text);
+  background: white;
+  outline: none;
+}
+
+.upload-queue-item__remove {
+  position: absolute;
+  top: 0.25rem;
+  right: 0.25rem;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: rgba(220, 38, 38, 0.85);
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  line-height: 1;
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width: 640px) {
+  .admin-gate__box {
+    margin: 1rem;
+    padding: 2rem 1.5rem;
+  }
+
+  .admin-content {
+    padding: 0 1rem 3rem;
+  }
+
+  .admin-section {
+    padding: 1.5rem 1rem;
+  }
+
+  .admin-form-row {
+    flex-direction: column;
+  }
+
+  .admin-tabs {
+    top: 50px;
+  }
+
+  .admin-tab {
+    padding: 0.6rem 1rem;
+    font-size: 0.85rem;
+  }
+
+  .collections-grid {
+    grid-template-columns: 1fr;
+  }
+}

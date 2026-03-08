@@ -13,6 +13,7 @@
     '    <ul class="nav__links" id="nav-menu">',
     '      <li><a href="index.html">Home</a></li>',
     '      <li><a href="portfolio.html">Portfolio</a></li>',
+    '      <li><a href="collections.html">Collections</a></li>',
     '      <li><a href="bookings.html" class="nav__cta">Book a Session</a></li>',
     '    </ul>',
     '    <button class="nav__toggle" id="nav-toggle" aria-label="Toggle navigation">',
@@ -69,6 +70,10 @@
     var currentPage = 'index.html';
     if (path.indexOf('portfolio') !== -1 || href.indexOf('portfolio') !== -1) {
       currentPage = 'portfolio.html';
+    } else if (path.indexOf('collections') !== -1 || href.indexOf('collections') !== -1) {
+      currentPage = 'collections.html';
+    } else if (path.indexOf('collection') !== -1 || href.indexOf('collection') !== -1) {
+      currentPage = 'collections.html';
     } else if (path.indexOf('bookings') !== -1 || href.indexOf('bookings') !== -1) {
       currentPage = 'bookings.html';
     } else if (path === '/' || path.indexOf('index') !== -1 || path === '' || path.match(/\/$/)) {
