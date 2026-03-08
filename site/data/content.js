@@ -73,6 +73,12 @@ window.SCP = /* DATA_START */
         "alt": "img-4304-1772999470257.jpg",
         "category": "sports",
         "featured": false
+      },
+      {
+        "src": "assets/images/gallery/sports/img-5023-1773001774304.jpg",
+        "alt": "img-5023-1773001774304.jpg",
+        "category": "sports",
+        "featured": false
       }
     ]
   },
