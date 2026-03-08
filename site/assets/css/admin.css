@@ -377,8 +377,8 @@
    ============================================================ */
 .admin-services-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-  gap: 1.25rem;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
 }
 
 .admin-service-card {
@@ -387,22 +387,83 @@
   overflow: hidden;
 }
 
+.admin-service-card__cover {
+  position: relative;
+}
+
 .admin-service-card__img {
   width: 100%;
-  height: 150px;
+  height: 160px;
   object-fit: cover;
   display: block;
+}
+
+.admin-service-card__no-cover {
+  width: 100%;
+  height: 160px;
+  background: var(--color-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-text-muted);
+  font-size: 0.85rem;
+}
+
+.admin-service-card__replace-btn {
+  position: absolute;
+  bottom: 0.5rem;
+  right: 0.5rem;
+  font-size: 0.75rem;
+  padding: 0.3rem 0.7rem;
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+
+.admin-service-card:hover .admin-service-card__replace-btn {
+  opacity: 1;
 }
 
 .admin-service-card__body {
   padding: 1rem;
 }
 
-.admin-service-card__name {
-  font-weight: 600;
-  color: var(--color-navy);
-  font-size: 0.9rem;
-  margin-bottom: 0.75rem;
+/* ============================================================
+   COLLECTION PHOTO — SET COVER BUTTON
+   ============================================================ */
+.admin-photo-item__set-cover {
+  position: absolute;
+  bottom: 0.25rem;
+  left: 0.25rem;
+  font-size: 0.65rem;
+  padding: 0.15rem 0.4rem;
+  background: rgba(13, 27, 42, 0.8);
+  color: white;
+  border: none;
+  border-radius: var(--radius);
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.15s;
+  white-space: nowrap;
+}
+
+.admin-photo-item:hover .admin-photo-item__set-cover {
+  opacity: 1;
+}
+
+.admin-photo-item__cover-badge {
+  position: absolute;
+  bottom: 0.25rem;
+  left: 0.25rem;
+  font-size: 0.65rem;
+  padding: 0.15rem 0.4rem;
+  background: var(--color-accent);
+  color: white;
+  border-radius: var(--radius);
+  pointer-events: none;
+}
+
+.admin-photo-item--is-cover {
+  outline: 2px solid var(--color-accent);
 }
 
 /* ============================================================

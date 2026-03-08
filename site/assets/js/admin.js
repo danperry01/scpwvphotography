@@ -1048,6 +1048,7 @@
 
     var col = findCollectionById(collectionId);
     var photos = (col && col.photos) || [];
+    var currentCover = col ? (col.cover || '') : '';
 
     if (photos.length === 0) {
       grid.innerHTML = '<p style="color: var(--color-text-muted); font-size: 0.85rem;">No photos uploaded yet.</p>';
@@ -1056,11 +1057,14 @@
 
     var html = '';
     photos.forEach(function (photo, i) {
+      var isCover = photo.src === currentCover;
       html += [
-        '<div class="admin-photo-item">',
+        '<div class="admin-photo-item' + (isCover ? ' admin-photo-item--is-cover' : '') + '">',
         '  <img src="' + escapeHtml(photo.src) + '" alt="' + escapeHtml(photo.alt || '') + '" loading="lazy">',
+        isCover ? '  <div class="admin-photo-item__cover-badge">Cover</div>' : '',
         '  <div class="admin-photo-item__label">' + escapeHtml(photo.alt || photo.src) + '</div>',
         '  <button class="admin-photo-item__remove" data-index="' + i + '" title="Remove">&times;</button>',
+        isCover ? '' : '  <button class="admin-photo-item__set-cover" data-index="' + i + '" title="Set as cover">Set Cover</button>',
         '</div>'
       ].join('\n');
     });
@@ -1073,6 +1077,41 @@
         removeCollectionPhoto(collectionId, idx);
       });
     });
+
+    grid.querySelectorAll('.admin-photo-item__set-cover').forEach(function (btn) {
+      btn.addEventListener('click', function (e) {
+        e.stopPropagation();
+        var idx = parseInt(btn.getAttribute('data-index'), 10);
+        setCollectionCover(collectionId, photos[idx].src);
+      });
+    });
+  }
+
+  async function setCollectionCover(collectionId, src) {
+    showBanner('Setting cover...', 'loading');
+    try {
+      var result = await readContentFile();
+      var data   = result.data;
+      var sha    = result.sha;
+
+      for (var i = 0; i < data.collections.length; i++) {
+        if (data.collections[i].id === collectionId) {
+          data.collections[i].cover = src;
+          break;
+        }
+      }
+
+      await writeContentFile(data, sha, 'Set cover for collection: ' + collectionId);
+
+      var localCol = findCollectionById(collectionId);
+      if (localCol) localCol.cover = src;
+
+      showBanner('Cover updated! Site deploying...', 'success');
+      renderCollectionPhotos(collectionId);
+    } catch (err) {
+      console.error(err);
+      showBanner('Error: ' + err.message, 'error');
+    }
   }
 
   async function removeCollectionPhoto(collectionId, index) {
@@ -1343,19 +1382,42 @@
     var services = (window.SCP && window.SCP.services) || [];
 
     if (services.length === 0) {
-      grid.innerHTML = '<p style="color: var(--color-text-muted); font-size: 0.9rem;">No services defined.</p>';
+      grid.innerHTML = '<p style="color: var(--color-text-muted); font-size: 0.9rem;">No services defined. Add a gallery category to create one.</p>';
       return;
     }
 
     var html = '';
     services.forEach(function (service, idx) {
+      var imgSrc = service.image || '';
       html += [
         '<div class="admin-service-card">',
-        '  <img src="' + escapeHtml(service.image) + '" alt="' + escapeHtml(service.name) + '" class="admin-service-card__img">',
-        '  <div class="admin-service-card__body">',
-        '    <p class="admin-service-card__name">' + escapeHtml(service.name) + '</p>',
+        '  <div class="admin-service-card__cover">',
+        imgSrc
+          ? '    <img src="' + escapeHtml(imgSrc) + '" alt="' + escapeHtml(service.name) + '" class="admin-service-card__img">'
+          : '    <div class="admin-service-card__no-cover">No cover image</div>',
         '    <input type="file" id="svc-file-' + idx + '" accept="image/*" style="display:none">',
-        '    <button class="btn btn--outline-dark" data-svc-index="' + idx + '" style="font-size:0.8rem; padding:0.4rem 0.9rem; width:100%;">Replace Cover</button>',
+        '    <button class="btn btn--outline-dark admin-service-card__replace-btn" data-svc-index="' + idx + '">Replace Cover</button>',
+        '  </div>',
+        '  <div class="admin-service-card__body">',
+        '    <div class="form-group" style="margin-bottom:0.6rem;">',
+        '      <label style="font-size:0.75rem; text-transform:uppercase; letter-spacing:0.04em;">Service Name</label>',
+        '      <input type="text" id="svc-name-' + idx + '" value="' + escapeHtml(service.name) + '">',
+        '    </div>',
+        '    <div style="display:flex; gap:0.5rem;">',
+        '      <div class="form-group" style="flex:1; margin-bottom:0.6rem;">',
+        '        <label style="font-size:0.75rem; text-transform:uppercase; letter-spacing:0.04em;">Prefix</label>',
+        '        <input type="text" id="svc-prefix-' + idx + '" value="' + escapeHtml(service.pricePrefix || '$') + '" placeholder="$">',
+        '      </div>',
+        '      <div class="form-group" style="flex:2; margin-bottom:0.6rem;">',
+        '        <label style="font-size:0.75rem; text-transform:uppercase; letter-spacing:0.04em;">Price</label>',
+        '        <input type="text" id="svc-price-' + idx + '" value="' + escapeHtml(service.price || '') + '" placeholder="100">',
+        '      </div>',
+        '    </div>',
+        '    <div class="form-group" style="margin-bottom:0.75rem;">',
+        '      <label style="font-size:0.75rem; text-transform:uppercase; letter-spacing:0.04em;">Description</label>',
+        '      <textarea id="svc-desc-' + idx + '" rows="3" style="resize:vertical;">' + escapeHtml(service.description || '') + '</textarea>',
+        '    </div>',
+        '    <button class="btn btn--primary" data-svc-save="' + idx + '" style="width:100%; font-size:0.85rem; padding:0.5rem 1rem;">Save Details</button>',
         '  </div>',
         '</div>'
       ].join('\n');
@@ -1363,7 +1425,6 @@
 
     grid.innerHTML = html;
 
-    // Attach events
     grid.querySelectorAll('[data-svc-index]').forEach(function (btn) {
       btn.addEventListener('click', function () {
         var idx = parseInt(btn.getAttribute('data-svc-index'), 10);
@@ -1378,15 +1439,68 @@
         if (fileInput.files[0]) updateServiceCover(idx, fileInput.files[0]);
       });
     });
+
+    grid.querySelectorAll('[data-svc-save]').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var idx = parseInt(btn.getAttribute('data-svc-save'), 10);
+        saveServiceDetails(idx, btn);
+      });
+    });
+  }
+
+  async function saveServiceDetails(serviceIndex, btn) {
+    var service = (window.SCP && window.SCP.services && window.SCP.services[serviceIndex]);
+    if (!service) return;
+
+    var name   = (document.getElementById('svc-name-' + serviceIndex) || {}).value.trim();
+    var prefix = (document.getElementById('svc-prefix-' + serviceIndex) || {}).value.trim();
+    var price  = (document.getElementById('svc-price-' + serviceIndex) || {}).value.trim();
+    var desc   = (document.getElementById('svc-desc-' + serviceIndex) || {}).value.trim();
+
+    if (!name) { showBanner('Service name cannot be empty.', 'error'); return; }
+
+    btn.disabled = true;
+    btn.textContent = 'Saving\u2026';
+
+    try {
+      var result = await readContentFile();
+      var data   = result.data;
+      var sha    = result.sha;
+
+      var svcIdx = data.services.findIndex(function (s) { return s.id === service.id; });
+      if (svcIdx === -1) throw new Error('Service not found in data.');
+
+      data.services[svcIdx].name        = name;
+      data.services[svcIdx].pricePrefix = prefix;
+      data.services[svcIdx].price       = price;
+      data.services[svcIdx].description = desc;
+
+      await writeContentFile(data, sha, 'Update service details: ' + service.id);
+
+      window.SCP.services[serviceIndex].name        = name;
+      window.SCP.services[serviceIndex].pricePrefix = prefix;
+      window.SCP.services[serviceIndex].price       = price;
+      window.SCP.services[serviceIndex].description = desc;
+
+      showBanner('Service updated! Site deploying...', 'success');
+      btn.textContent = '\u2713 Saved';
+      setTimeout(function () { btn.disabled = false; btn.textContent = 'Save Details'; }, 2000);
+    } catch (err) {
+      console.error(err);
+      showBanner('Error: ' + err.message, 'error');
+      btn.disabled = false;
+      btn.textContent = 'Save Details';
+    }
   }
 
   async function updateServiceCover(serviceIndex, file) {
     var service = (window.SCP && window.SCP.services && window.SCP.services[serviceIndex]);
     if (!service) return;
 
-    showBanner('Uploading service cover...', 'loading');
-
+    var btn = document.querySelector('[data-svc-index="' + serviceIndex + '"]');
     try {
+      if (btn) { btn.disabled = true; btn.textContent = 'Step 1/2: Uploading\u2026'; }
+
       var ext      = file.name.lastIndexOf('.') !== -1
         ? file.name.substring(file.name.lastIndexOf('.')).toLowerCase()
         : '.jpg';
@@ -1395,22 +1509,26 @@
 
       await uploadImage(path, file);
 
+      if (btn) btn.textContent = 'Step 2/2: Saving\u2026';
+
       var result = await readContentFile();
       var data   = result.data;
       var sha    = result.sha;
 
-      if (!data.services || !data.services[serviceIndex]) throw new Error('Service not found.');
-      data.services[serviceIndex].image = 'assets/images/gallery/' + service.id + '/' + filename;
+      var svcIdx = data.services.findIndex(function (s) { return s.id === service.id; });
+      if (svcIdx === -1) throw new Error('Service not found in data.');
+      data.services[svcIdx].image = 'assets/images/gallery/' + service.id + '/' + filename;
 
       await writeContentFile(data, sha, 'Update service cover: ' + service.id);
 
-      window.SCP.services[serviceIndex].image = data.services[serviceIndex].image;
+      window.SCP.services[serviceIndex].image = data.services[svcIdx].image;
 
       showBanner('Service cover updated! Site deploying...', 'success');
       renderServicesGrid();
     } catch (err) {
       console.error(err);
       showBanner('Error: ' + err.message, 'error');
+      if (btn) { btn.disabled = false; btn.textContent = 'Replace Cover'; }
     }
   }
 
@@ -1487,16 +1605,28 @@
       if (!data.gallery.categories) data.gallery.categories = [];
       data.gallery.categories.push({ id: id, label: label });
 
+      // Create a matching service entry if one doesn't already exist
+      if (!data.services) data.services = [];
+      if (!data.services.find(function (s) { return s.id === id; })) {
+        data.services.push({ id: id, name: label + ' Session', price: '100', pricePrefix: '$', image: '', description: '' });
+      }
+
       await writeContentFile(data, sha, 'Add gallery category: ' + label);
 
       if (!window.SCP.gallery) window.SCP.gallery = {};
       if (!window.SCP.gallery.categories) window.SCP.gallery.categories = [];
       window.SCP.gallery.categories.push({ id: id, label: label });
 
+      if (!window.SCP.services) window.SCP.services = [];
+      if (!window.SCP.services.find(function (s) { return s.id === id; })) {
+        window.SCP.services.push({ id: id, name: label + ' Session', price: '100', pricePrefix: '$', image: '', description: '' });
+      }
+
       input.value = '';
       showBanner('Category added. Site deploying...', 'success');
       renderCategoriesAdmin();
       populateCategorySelects();
+      renderServicesGrid();
     } catch (err) {
       console.error(err);
       showBanner('Error: ' + err.message, 'error');
@@ -1525,13 +1655,22 @@
 
       data.gallery.categories = data.gallery.categories.filter(function (c) { return c.id !== id; });
 
+      // Remove the matching service
+      if (data.services) {
+        data.services = data.services.filter(function (s) { return s.id !== id; });
+      }
+
       await writeContentFile(data, sha, 'Remove gallery category: ' + id);
 
       window.SCP.gallery.categories = window.SCP.gallery.categories.filter(function (c) { return c.id !== id; });
+      if (window.SCP.services) {
+        window.SCP.services = window.SCP.services.filter(function (s) { return s.id !== id; });
+      }
 
       showBanner('Category removed. Site deploying...', 'success');
       renderCategoriesAdmin();
       populateCategorySelects();
+      renderServicesGrid();
     } catch (err) {
       console.error(err);
       showBanner('Error: ' + err.message, 'error');

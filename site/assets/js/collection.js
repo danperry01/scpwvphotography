@@ -193,12 +193,15 @@
     var photoCount = photos.length;
 
     // Build header
+    var coverStyle = collection.cover
+      ? ' style="background-image: url(\'' + collection.cover + '\');"'
+      : '';
     var headerHtml = [
       '<div class="collection-view-header">',
-      '  <h1 style="font-family: var(--font-serif); color: var(--color-navy); font-size: clamp(1.8rem, 4vw, 2.5rem); margin-bottom: 0.5rem;">' + escapeHtml(collection.name) + '</h1>',
-      collection.date ? '  <p style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 0.5rem;">' + escapeHtml(collection.date) + '</p>' : '',
-      collection.description ? '  <p style="color: var(--color-text-muted); max-width: 560px; margin: 0 auto;">' + escapeHtml(collection.description) + '</p>' : '',
-      '  <p style="color: var(--color-text-muted); font-size: 0.85rem; margin-top: 0.75rem;">' + photoCount + ' photo' + (photoCount !== 1 ? 's' : '') + '</p>',
+      '  <h1 style="font-family: var(--font-serif); color: var(--color-white); font-size: clamp(1.8rem, 4vw, 2.5rem); margin-bottom: 0.5rem;">' + escapeHtml(collection.name) + '</h1>',
+      collection.date ? '  <p style="color: rgba(255,255,255,0.75); font-size: 0.9rem; margin-bottom: 0.5rem;">' + escapeHtml(collection.date) + '</p>' : '',
+      collection.description ? '  <p style="color: rgba(255,255,255,0.75); max-width: 560px; margin: 0 auto;">' + escapeHtml(collection.description) + '</p>' : '',
+      '  <p style="color: rgba(255,255,255,0.6); font-size: 0.85rem; margin-top: 0.75rem;">' + photoCount + ' photo' + (photoCount !== 1 ? 's' : '') + '</p>',
       '</div>'
     ].join('\n');
 
@@ -227,7 +230,7 @@
     ].join('\n') : '';
 
     container.innerHTML = [
-      '<section class="page-hero">',
+      '<section class="page-hero collection-hero"' + coverStyle + '>',
       '  <div class="container">',
       headerHtml,
       '  </div>',

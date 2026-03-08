@@ -1101,6 +1101,23 @@ a { color: var(--color-accent); }
   text-align: center;
 }
 
+.collection-hero {
+  background-size: cover;
+  background-position: center;
+  position: relative;
+}
+
+.collection-hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(13, 27, 42, 0.65);
+}
+
+.collection-hero .container {
+  position: relative;
+}
+
 .page-hero__title {
   font-family: var(--font-serif);
   color: var(--color-white);
