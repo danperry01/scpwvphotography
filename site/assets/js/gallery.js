@@ -191,13 +191,9 @@
       }
     });
 
-    var categoryLabels = {
-      all: 'All',
-      sports: 'Sports',
-      formal: 'Formal',
-      senior: 'Senior',
-      portrait: 'Portrait'
-    };
+    var categoryLabels = { all: 'All' };
+    var definedCats = (window.SCP && window.SCP.gallery && window.SCP.gallery.categories) || [];
+    definedCats.forEach(function (c) { categoryLabels[c.id] = c.label; });
 
     var html = '';
     categories.forEach(function (cat) {

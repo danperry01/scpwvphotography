@@ -826,6 +826,46 @@
 }
 
 /* ============================================================
+   CATEGORY CHIPS
+   ============================================================ */
+.categories-chip-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.category-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  background: var(--color-bg);
+  border: 1.5px solid var(--color-border);
+  border-radius: 100px;
+  padding: 0.3rem 0.75rem;
+  font-size: 0.85rem;
+  font-family: var(--font-sans);
+  color: var(--color-navy);
+  font-weight: 500;
+}
+
+.category-chip__remove {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--color-text-muted);
+  font-size: 1rem;
+  line-height: 1;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  transition: color var(--transition);
+}
+
+.category-chip__remove:hover {
+  color: #dc2626;
+}
+
+/* ============================================================
    UPLOAD STATUS MESSAGE
    ============================================================ */
 .upload-status {

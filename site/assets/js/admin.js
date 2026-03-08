@@ -497,11 +497,11 @@
 
     editingPhotoIndex = index;
 
-    document.getElementById('photo-edit-preview').src   = photo.src;
-    document.getElementById('photo-edit-alt').value     = photo.alt || '';
-    document.getElementById('photo-edit-category').value = photo.category || 'sports';
+    document.getElementById('photo-edit-preview').src      = photo.src;
+    document.getElementById('photo-edit-alt').value        = photo.alt || '';
     document.getElementById('photo-edit-featured').checked = photo.featured === true;
     document.getElementById('photo-edit-active').checked   = photo.active !== false;
+    populateCategorySelects(photo.category || '');
 
     hideError('photo-edit-error');
     document.getElementById('photo-edit-modal').style.display = 'flex';
@@ -1398,11 +1398,147 @@
   }
 
   /* ============================================================
+     GALLERY CATEGORIES
+     ============================================================ */
+  function getCategories() {
+    return (window.SCP && window.SCP.gallery && window.SCP.gallery.categories) || [];
+  }
+
+  function populateCategorySelects(selectedValue) {
+    var cats = getCategories();
+    var selects = [
+      document.getElementById('gallery-category'),
+      document.getElementById('photo-edit-category')
+    ];
+    selects.forEach(function (sel) {
+      if (!sel) return;
+      var current = selectedValue !== undefined ? selectedValue : sel.value;
+      sel.innerHTML = cats.map(function (c) {
+        return '<option value="' + escapeHtml(c.id) + '">' + escapeHtml(c.label) + '</option>';
+      }).join('');
+      if (current) sel.value = current;
+    });
+  }
+
+  function renderCategoriesAdmin() {
+    var list = document.getElementById('admin-categories-list');
+    if (!list) return;
+    var cats = getCategories();
+    if (cats.length === 0) {
+      list.innerHTML = '<p style="color:var(--color-text-muted); font-size:0.9rem;">No categories yet.</p>';
+      return;
+    }
+    list.innerHTML = cats.map(function (c) {
+      return [
+        '<div class="category-chip">',
+        '  <span>' + escapeHtml(c.label) + '</span>',
+        '  <button class="category-chip__remove" data-id="' + escapeHtml(c.id) + '" title="Remove category">&times;</button>',
+        '</div>'
+      ].join('');
+    }).join('');
+
+    list.querySelectorAll('.category-chip__remove').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        removeCategory(btn.getAttribute('data-id'));
+      });
+    });
+  }
+
+  async function addCategory() {
+    var input = document.getElementById('new-category-input');
+    var label = input ? input.value.trim() : '';
+    if (!label) { showError('category-error', 'Please enter a category name.'); return; }
+
+    var id = slugify(label);
+    if (!id) { showError('category-error', 'Invalid category name.'); return; }
+
+    var cats = getCategories();
+    if (cats.some(function (c) { return c.id === id; })) {
+      showError('category-error', 'A category with that name already exists.');
+      return;
+    }
+
+    hideError('category-error');
+    showBanner('Saving category...', 'loading');
+
+    try {
+      var result = await readContentFile();
+      var data   = result.data;
+      var sha    = result.sha;
+
+      if (!data.gallery) data.gallery = {};
+      if (!data.gallery.categories) data.gallery.categories = [];
+      data.gallery.categories.push({ id: id, label: label });
+
+      await writeContentFile(data, sha, 'Add gallery category: ' + label);
+
+      if (!window.SCP.gallery) window.SCP.gallery = {};
+      if (!window.SCP.gallery.categories) window.SCP.gallery.categories = [];
+      window.SCP.gallery.categories.push({ id: id, label: label });
+
+      input.value = '';
+      showBanner('Category added. Site deploying...', 'success');
+      renderCategoriesAdmin();
+      populateCategorySelects();
+    } catch (err) {
+      console.error(err);
+      showBanner('Error: ' + err.message, 'error');
+      showError('category-error', err.message);
+    }
+  }
+
+  async function removeCategory(id) {
+    var photos = (window.SCP && window.SCP.gallery && window.SCP.gallery.photos) || [];
+    var inUse  = photos.some(function (p) { return p.category === id; });
+    var cats   = getCategories();
+    var cat    = cats.find(function (c) { return c.id === id; });
+    var label  = cat ? cat.label : id;
+
+    var msg = inUse
+      ? 'Photos are currently assigned to "' + label + '". Removing it won\'t delete the photos, but they will have no category filter. Continue?'
+      : 'Remove category "' + label + '"?';
+    if (!confirm(msg)) return;
+
+    showBanner('Removing category...', 'loading');
+
+    try {
+      var result = await readContentFile();
+      var data   = result.data;
+      var sha    = result.sha;
+
+      data.gallery.categories = data.gallery.categories.filter(function (c) { return c.id !== id; });
+
+      await writeContentFile(data, sha, 'Remove gallery category: ' + id);
+
+      window.SCP.gallery.categories = window.SCP.gallery.categories.filter(function (c) { return c.id !== id; });
+
+      showBanner('Category removed. Site deploying...', 'success');
+      renderCategoriesAdmin();
+      populateCategorySelects();
+    } catch (err) {
+      console.error(err);
+      showBanner('Error: ' + err.message, 'error');
+    }
+  }
+
+  function initCategoriesAdmin() {
+    var addBtn = document.getElementById('add-category-btn');
+    var input  = document.getElementById('new-category-input');
+    if (addBtn) addBtn.addEventListener('click', addCategory);
+    if (input)  input.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter') addCategory();
+    });
+    renderCategoriesAdmin();
+    populateCategorySelects();
+  }
+
+  /* ============================================================
      INIT ADMIN PANEL
      ============================================================ */
   function initAdmin() {
     initTabs();
     initHomeHighlights();
+    initCategoriesAdmin();
     initGalleryUpload();
     initCollectionsTab();
     initPhotoEditModal();

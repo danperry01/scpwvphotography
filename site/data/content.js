@@ -1,6 +1,12 @@
 window.SCP = /* DATA_START */
 {
   "gallery": {
+    "categories": [
+      { "id": "sports",   "label": "Sports" },
+      { "id": "formal",   "label": "Formal Dance" },
+      { "id": "senior",   "label": "Senior" },
+      { "id": "portrait", "label": "Portrait" }
+    ],
     "photos": [
       {
         "src": "assets/images/gallery/sports/sports-01.jpg",
