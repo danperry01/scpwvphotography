@@ -185,6 +185,10 @@ window.SCP = /* DATA_START */
         {
           "src": "assets/images/collections/test-6jhm/screenshot-2026-03-08-at-12-47-17-pm-1773002062031-3.jpg",
           "alt": "screenshot-2026-03-08-at-12-47-17-pm-1773002062031-3.jpg"
+        },
+        {
+          "src": "assets/images/collections/test-6jhm/screenshot-2026-03-08-at-12-47-17-pm-1773002233207-0.jpg",
+          "alt": "screenshot-2026-03-08-at-12-47-17-pm-1773002233207-0.jpg"
         }
       ]
     }
