@@ -138,7 +138,8 @@ window.SCP = /* DATA_START */
     "homePage": [
       "assets/images/gallery/sports/sports-01.jpg",
       "assets/images/gallery/sports/img-4294-1772999464374.jpg",
-      "assets/images/gallery/sports/img-4304-1772999470257.jpg"
+      "assets/images/gallery/sports/img-4304-1772999470257.jpg",
+      "assets/images/gallery/sports/img-4299-1772999446408.jpg"
     ]
   },
   "services": [
