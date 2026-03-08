@@ -271,6 +271,7 @@
      GALLERY TAB
      ============================================================ */
   var gallerySelectedFile = null;
+  var editingPhotoIndex   = null;
 
   function renderGalleryGrid() {
     var grid = document.getElementById('admin-gallery-grid');
@@ -284,13 +285,18 @@
 
     var html = '';
     photos.forEach(function (photo, i) {
+      var isInactive = photo.active === false;
+      var isFeatured = photo.featured === true;
       html += [
-        '<div class="admin-photo-item">',
+        '<div class="admin-photo-item' + (isInactive ? ' admin-photo-item--inactive' : '') + '">',
         '  <img src="' + escapeHtml(photo.src) + '" alt="' + escapeHtml(photo.alt) + '" loading="lazy">',
+        isFeatured ? '  <div class="admin-photo-item__featured-badge">&#9733; Home</div>' : '',
+        isInactive ? '  <div class="admin-photo-item__hidden-badge">Hidden</div>' : '',
         '  <div class="admin-photo-item__label">' + escapeHtml(photo.alt || photo.src) + '</div>',
+        '  <button class="admin-photo-item__edit-btn" data-index="' + i + '" title="Edit photo">&#9998;</button>',
         '  <button class="admin-photo-item__remove" data-index="' + i + '" title="Remove photo">&times;</button>',
         '</div>'
-      ].join('\n');
+      ].filter(Boolean).join('\n');
     });
 
     grid.innerHTML = html;
@@ -301,6 +307,107 @@
         var idx = parseInt(btn.getAttribute('data-index'), 10);
         removeGalleryPhoto(idx);
       });
+    });
+
+    grid.querySelectorAll('.admin-photo-item__edit-btn').forEach(function (btn) {
+      btn.addEventListener('click', function (e) {
+        e.stopPropagation();
+        var idx = parseInt(btn.getAttribute('data-index'), 10);
+        openPhotoEditModal(idx);
+      });
+    });
+  }
+
+  /* ============================================================
+     PHOTO EDIT MODAL
+     ============================================================ */
+  function openPhotoEditModal(index) {
+    var photos = (window.SCP && window.SCP.gallery && window.SCP.gallery.photos) || [];
+    var photo  = photos[index];
+    if (!photo) return;
+
+    editingPhotoIndex = index;
+
+    document.getElementById('photo-edit-preview').src   = photo.src;
+    document.getElementById('photo-edit-alt').value     = photo.alt || '';
+    document.getElementById('photo-edit-category').value = photo.category || 'sports';
+    document.getElementById('photo-edit-featured').checked = photo.featured === true;
+    document.getElementById('photo-edit-active').checked   = photo.active !== false;
+
+    hideError('photo-edit-error');
+    document.getElementById('photo-edit-modal').style.display = 'flex';
+  }
+
+  function closePhotoEditModal() {
+    document.getElementById('photo-edit-modal').style.display = 'none';
+    editingPhotoIndex = null;
+  }
+
+  async function savePhotoEdit() {
+    if (editingPhotoIndex === null) return;
+
+    var alt      = document.getElementById('photo-edit-alt').value.trim();
+    var category = document.getElementById('photo-edit-category').value;
+    var featured = document.getElementById('photo-edit-featured').checked;
+    var active   = document.getElementById('photo-edit-active').checked;
+    var saveBtn  = document.getElementById('photo-edit-save');
+
+    hideError('photo-edit-error');
+    saveBtn.disabled = true;
+    showBanner('Saving changes...', 'loading');
+
+    try {
+      var result = await readContentFile();
+      var data   = result.data;
+      var sha    = result.sha;
+
+      if (!data.gallery || !data.gallery.photos || !data.gallery.photos[editingPhotoIndex]) {
+        throw new Error('Photo not found in data.');
+      }
+
+      data.gallery.photos[editingPhotoIndex].alt      = alt;
+      data.gallery.photos[editingPhotoIndex].category = category;
+      data.gallery.photos[editingPhotoIndex].featured = featured;
+      data.gallery.photos[editingPhotoIndex].active   = active;
+
+      await writeContentFile(data, sha, 'Update photo metadata at index ' + editingPhotoIndex);
+
+      // Update local state
+      var local = window.SCP.gallery.photos[editingPhotoIndex];
+      local.alt      = alt;
+      local.category = category;
+      local.featured = featured;
+      local.active   = active;
+
+      showBanner('Photo updated. Site deploying...', 'success');
+      saveBtn.disabled = false;
+      closePhotoEditModal();
+      renderGalleryGrid();
+    } catch (err) {
+      console.error(err);
+      showBanner('Error: ' + err.message, 'error');
+      showError('photo-edit-error', err.message);
+      saveBtn.disabled = false;
+    }
+  }
+
+  function initPhotoEditModal() {
+    var saveBtn   = document.getElementById('photo-edit-save');
+    var cancelBtn = document.getElementById('photo-edit-cancel');
+    var modal     = document.getElementById('photo-edit-modal');
+
+    if (saveBtn)   saveBtn.addEventListener('click', savePhotoEdit);
+    if (cancelBtn) cancelBtn.addEventListener('click', closePhotoEditModal);
+    if (modal) {
+      modal.addEventListener('click', function (e) {
+        if (e.target === modal) closePhotoEditModal();
+      });
+    }
+
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && modal && modal.style.display !== 'none') {
+        closePhotoEditModal();
+      }
     });
   }
 
@@ -1116,6 +1223,7 @@
     initTabs();
     initGalleryUpload();
     initCollectionsTab();
+    initPhotoEditModal();
     renderGalleryGrid();
     renderCollectionsList();
     renderServicesGrid();

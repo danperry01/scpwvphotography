@@ -485,6 +485,110 @@
 }
 
 /* ============================================================
+   PHOTO EDIT MODAL
+   ============================================================ */
+.admin-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 500;
+  padding: 1rem;
+}
+
+.admin-modal__box {
+  background: white;
+  border-radius: var(--radius-lg);
+  padding: 2rem;
+  width: 100%;
+  max-width: 480px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: var(--shadow-lg);
+}
+
+.admin-modal__title {
+  font-family: var(--font-serif);
+  color: var(--color-navy);
+  font-size: 1.2rem;
+  margin-bottom: 1.25rem;
+}
+
+.admin-modal__preview {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  border-radius: var(--radius);
+  margin-bottom: 1.25rem;
+  display: block;
+}
+
+/* ============================================================
+   PHOTO ITEM — EDIT BUTTON, BADGES, INACTIVE STATE
+   ============================================================ */
+.admin-photo-item__edit-btn {
+  position: absolute;
+  top: 0.25rem;
+  left: 0.25rem;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: rgba(13, 27, 42, 0.85);
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-size: 0.8rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity var(--transition);
+  padding: 0;
+  line-height: 1;
+}
+
+.admin-photo-item:hover .admin-photo-item__edit-btn {
+  opacity: 1;
+}
+
+.admin-photo-item__featured-badge {
+  position: absolute;
+  bottom: 1.6rem;
+  left: 0.25rem;
+  background: var(--color-accent);
+  color: white;
+  font-size: 0.6rem;
+  font-weight: 700;
+  padding: 0.15rem 0.4rem;
+  border-radius: 100px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  pointer-events: none;
+}
+
+.admin-photo-item__hidden-badge {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(0, 0, 0, 0.65);
+  color: white;
+  font-size: 0.65rem;
+  font-weight: 700;
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  pointer-events: none;
+}
+
+.admin-photo-item--inactive {
+  opacity: 0.45;
+}
+
+/* ============================================================
    CHECKBOX FORM GROUP
    ============================================================ */
 .form-group label:has(input[type="checkbox"]) {

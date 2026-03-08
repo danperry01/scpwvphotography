@@ -118,7 +118,7 @@
     if (!window.SCP || !window.SCP.gallery || !window.SCP.gallery.photos) return;
 
     var featured = window.SCP.gallery.photos.filter(function (p) {
-      return p.featured === true;
+      return p.featured === true && p.active !== false;
     }).slice(0, 4);
 
     if (featured.length === 0) return;
@@ -163,7 +163,9 @@
     if (!container) return;
     if (!window.SCP || !window.SCP.gallery || !window.SCP.gallery.photos) return;
 
-    allPhotos = window.SCP.gallery.photos;
+    allPhotos = window.SCP.gallery.photos.filter(function (p) {
+      return p.active !== false;
+    });
 
     renderFilterBar();
     renderGalleryItems(container, allPhotos);
