@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Book a Session — SCP Photography</title>
+  <meta name="description" content="Request a photography session with SCP Photography. Sports, senior, formal dance, and portrait sessions available across West Virginia.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/tokens.css">
+  <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body>
+
+  <div id="nav-root"></div>
+
+  <div class="page-hero">
+    <div class="container">
+      <h1 class="page-hero__title">Book a Session</h1>
+      <p class="page-hero__sub">Fill out the form below and we'll be in touch within 24 hours.</p>
+    </div>
+  </div>
+
+  <section class="booking-section">
+    <div class="booking-container">
+
+      <!-- Step indicators -->
+      <div class="form-steps" id="form-steps">
+        <div class="form-step-indicator" data-step="1">
+          <div class="step-num active" id="step-num-1">1</div>
+          <span class="step-label">Session Type</span>
+        </div>
+        <div class="form-step-indicator" data-step="2">
+          <div class="step-num" id="step-num-2">2</div>
+          <span class="step-label">Your Info</span>
+        </div>
+        <div class="form-step-indicator" data-step="3">
+          <div class="step-num" id="step-num-3">3</div>
+          <span class="step-label">Details</span>
+        </div>
+      </div>
+
+      <!-- Form -->
+      <form id="booking-form" novalidate>
+
+        <!-- Step 1 -->
+        <div class="form-step active" id="step-1">
+          <h3 style="font-family: var(--font-serif); color: var(--color-navy); margin-bottom: 1.5rem;">What type of session are you looking for?</h3>
+          <div id="session-options" class="session-options"></div>
+          <p class="form-error" id="error-session">Please select a session type to continue.</p>
+          <div class="form-nav">
+            <span></span>
+            <button type="button" class="btn btn--primary" id="next-1">Next &rarr;</button>
+          </div>
+        </div>
+
+        <!-- Step 2 -->
+        <div class="form-step" id="step-2">
+          <h3 style="font-family: var(--font-serif); color: var(--color-navy); margin-bottom: 1.5rem;">Your contact information</h3>
+          <div class="form-group">
+            <label for="name">Full Name *</label>
+            <input type="text" id="name" name="name" placeholder="Jane Smith" autocomplete="name">
+            <p class="form-error" id="error-name">Please enter your name.</p>
+          </div>
+          <div class="form-group">
+            <label for="email">Email Address *</label>
+            <input type="email" id="email" name="email" placeholder="jane@example.com" autocomplete="email">
+            <p class="form-error" id="error-email">Please enter a valid email address.</p>
+          </div>
+          <div class="form-group">
+            <label for="phone">Phone Number <span style="color: var(--color-text-muted); font-weight: 400;">(optional)</span></label>
+            <input type="tel" id="phone" name="phone" placeholder="+1 (555) 000-0000" autocomplete="tel">
+          </div>
+          <div class="form-nav">
+            <button type="button" class="btn btn--outline-dark" id="back-2">&larr; Back</button>
+            <button type="button" class="btn btn--primary" id="next-2">Next &rarr;</button>
+          </div>
+        </div>
+
+        <!-- Step 3 -->
+        <div class="form-step" id="step-3">
+          <h3 style="font-family: var(--font-serif); color: var(--color-navy); margin-bottom: 1.5rem;">Session details</h3>
+          <div class="form-group">
+            <label for="date">Preferred Date</label>
+            <input type="date" id="date" name="date">
+          </div>
+          <div class="form-group">
+            <label for="message">Additional Notes <span style="color: var(--color-text-muted); font-weight: 400;">(optional)</span></label>
+            <textarea id="message" name="message" placeholder="Tell us about your event, team, or any special requests."></textarea>
+          </div>
+          <p class="form-error" id="error-submit" style="margin-bottom: 1rem;"></p>
+          <div class="form-nav">
+            <button type="button" class="btn btn--outline-dark" id="back-3">&larr; Back</button>
+            <button type="submit" class="btn btn--primary" id="submit-btn">Send Inquiry</button>
+          </div>
+        </div>
+
+      </form>
+
+      <!-- Success state -->
+      <div class="form-success" id="form-success">
+        <div class="form-success__icon">&#10003;</div>
+        <h2 style="font-family: var(--font-serif); color: var(--color-navy); margin-bottom: 1rem;">Inquiry Sent!</h2>
+        <p style="color: var(--color-text-muted); line-height: 1.7; margin-bottom: 2rem;">Thanks for reaching out. We'll review your request and get back to you within 24 hours to confirm your session.</p>
+        <a href="index.html" class="btn btn--outline-dark">Back to Home</a>
+      </div>
+
+    </div>
+  </section>
+
+  <div id="footer-root"></div>
+
+  <!-- EmailJS SDK (loads from CDN, gracefully absent if offline) -->
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+
+  <script src="data/content.js"></script>
+  <script src="assets/js/main.js"></script>
+  <script src="assets/js/booking.js"></script>
+
+</body>
+</html>
