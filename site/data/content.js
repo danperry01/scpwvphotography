@@ -2,10 +2,36 @@ window.SCP = /* DATA_START */
 {
   "gallery": {
     "photos": [
-      { "src": "assets/images/gallery/sports/sports-01.jpg", "alt": "Basketball player drives to the basket during a competitive game", "category": "sports", "featured": true },
-      { "src": "assets/images/gallery/sports/sports-02.jpg", "alt": "Player #23 walks to the free throw line during a high school basketball game", "category": "sports", "featured": true },
-      { "src": "assets/images/gallery/sports/sports-03.jpg", "alt": "Athlete surveys the court during pregame warmups", "category": "sports", "featured": true },
-      { "src": "assets/images/gallery/sports/sports-04.jpg", "alt": "Guard dribbles upcourt during pregame warmups", "category": "sports", "featured": true }
+      {
+        "src": "assets/images/gallery/sports/sports-01.jpg",
+        "alt": "Basketball player drives to the basket during a competitive game",
+        "category": "sports",
+        "featured": true
+      },
+      {
+        "src": "assets/images/gallery/sports/sports-02.jpg",
+        "alt": "Player #23 walks to the free throw line during a high school basketball game",
+        "category": "sports",
+        "featured": true
+      },
+      {
+        "src": "assets/images/gallery/sports/sports-03.jpg",
+        "alt": "Athlete surveys the court during pregame warmups",
+        "category": "sports",
+        "featured": true
+      },
+      {
+        "src": "assets/images/gallery/sports/sports-04.jpg",
+        "alt": "Guard dribbles upcourt during pregame warmups",
+        "category": "sports",
+        "featured": true
+      },
+      {
+        "src": "assets/images/gallery/portrait/screenshot-2026-03-08-at-2-46-56-pm-1772995624126.jpg",
+        "alt": "test",
+        "category": "portrait",
+        "featured": true
+      }
     ]
   },
   "services": [
@@ -15,7 +41,7 @@ window.SCP = /* DATA_START */
       "price": "100",
       "pricePrefix": "From $",
       "image": "assets/images/gallery/sports/sports-cover.jpg",
-      "description": "Built for athletes who want their game documented at its best. Sessions focus on individual and team shots that highlight strength, movement, and personality — ideal for recruiting profiles and athletic portfolios."
+      "description": "Built for athletes who want their game documented at its best. Sessions focus on individual and team shots that highlight strength, movement, and personality â ideal for recruiting profiles and athletic portfolios."
     },
     {
       "id": "formal",
@@ -23,7 +49,7 @@ window.SCP = /* DATA_START */
       "price": "75",
       "pricePrefix": "From $",
       "image": "assets/images/gallery/formal/formal-cover.jpg",
-      "description": "Capture one of the most memorable nights of high school. These sessions highlight outfits, friendships, and the excitement of the evening — individual portraits, couples, and group shots in a polished, timeless style."
+      "description": "Capture one of the most memorable nights of high school. These sessions highlight outfits, friendships, and the excitement of the evening â individual portraits, couples, and group shots in a polished, timeless style."
     },
     {
       "id": "senior",
