@@ -458,11 +458,9 @@
     var html = '';
     photos.forEach(function (photo, i) {
       var isInactive = photo.active === false;
-      var isFeatured = photo.featured === true;
       html += [
         '<div class="admin-photo-item' + (isInactive ? ' admin-photo-item--inactive' : '') + '">',
         '  <img src="' + escapeHtml(photo.src) + '" alt="' + escapeHtml(photo.alt) + '" loading="lazy">',
-        isFeatured ? '  <div class="admin-photo-item__featured-badge">&#9733; Home</div>' : '',
         isInactive ? '  <div class="admin-photo-item__hidden-badge">Hidden</div>' : '',
         '  <div class="admin-photo-item__label">' + escapeHtml(photo.alt || photo.src) + '</div>',
         '  <button class="admin-photo-item__edit-btn" data-index="' + i + '" title="Edit photo">&#9998;</button>',
@@ -500,10 +498,9 @@
 
     editingPhotoIndex = index;
 
-    document.getElementById('photo-edit-preview').src      = photo.src;
-    document.getElementById('photo-edit-alt').value        = photo.alt || '';
-    document.getElementById('photo-edit-featured').checked = photo.featured === true;
-    document.getElementById('photo-edit-active').checked   = photo.active !== false;
+    document.getElementById('photo-edit-preview').src    = photo.src;
+    document.getElementById('photo-edit-alt').value      = photo.alt || '';
+    document.getElementById('photo-edit-active').checked = photo.active !== false;
     populateCategorySelects(photo.category || '');
 
     hideError('photo-edit-error');
@@ -520,7 +517,6 @@
 
     var alt      = document.getElementById('photo-edit-alt').value.trim();
     var category = document.getElementById('photo-edit-category').value;
-    var featured = document.getElementById('photo-edit-featured').checked;
     var active   = document.getElementById('photo-edit-active').checked;
     var saveBtn  = document.getElementById('photo-edit-save');
 
@@ -539,7 +535,6 @@
 
       data.gallery.photos[editingPhotoIndex].alt      = alt;
       data.gallery.photos[editingPhotoIndex].category = category;
-      data.gallery.photos[editingPhotoIndex].featured = featured;
       data.gallery.photos[editingPhotoIndex].active   = active;
 
       await writeContentFile(data, sha, 'Update photo metadata at index ' + editingPhotoIndex);
@@ -548,7 +543,6 @@
       var local = window.SCP.gallery.photos[editingPhotoIndex];
       local.alt      = alt;
       local.category = category;
-      local.featured = featured;
       local.active   = active;
 
       showBanner('Photo updated. Site deploying...', 'success');
@@ -662,7 +656,6 @@
 
     var category  = document.getElementById('gallery-category').value;
     var alt       = document.getElementById('gallery-alt').value.trim();
-    var featured  = document.getElementById('gallery-featured').checked;
     var uploadBtn = document.getElementById('add-gallery-photo');
 
     hideError('gallery-error');
@@ -693,8 +686,7 @@
       var newPhoto = {
         src: 'assets/images/gallery/' + category + '/' + filename,
         alt: alt || filename,
-        category: category,
-        featured: featured
+        category: category
       };
 
       data.gallery.photos.push(newPhoto);
@@ -725,15 +717,12 @@
     var previewImg   = document.getElementById('gallery-preview-img');
     var altInput     = document.getElementById('gallery-alt');
     var uploadBtn    = document.getElementById('add-gallery-photo');
-    var featuredCb   = document.getElementById('gallery-featured');
-
     if (fileInput)   fileInput.value = '';
     if (placeholder) placeholder.style.display = 'block';
     if (previewWrap) previewWrap.style.display  = 'none';
     if (previewImg)  previewImg.src = '';
     if (altInput)    altInput.value = '';
     if (uploadBtn)   { uploadBtn.disabled = true; uploadBtn.textContent = 'Upload Photo'; }
-    if (featuredCb)  featuredCb.checked = false;
   }
 
   async function removeGalleryPhoto(index) {
