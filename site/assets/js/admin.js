@@ -408,6 +408,11 @@
 
   async function saveHomeHighlights() {
     var statusEl = document.getElementById('highlights-status');
+    if (statusEl) {
+      statusEl.textContent = 'Saving\u2026';
+      statusEl.className   = 'upload-status';
+      statusEl.style.display = 'block';
+    }
     try {
       var result = await readContentFile();
       var data   = result.data;
@@ -422,17 +427,14 @@
       window.SCP.gallery.homePage = homeHighlights.slice();
 
       if (statusEl) {
-        statusEl.textContent = '✓ Home page updated. Changes appear in ~2 minutes.';
+        statusEl.textContent = '\u2713 Saved. Site is rebuilding \u2014 live site updates in ~2 minutes.';
         statusEl.className   = 'upload-status upload-status--ok';
-        statusEl.style.display = 'block';
-        setTimeout(function () { statusEl.style.display = 'none'; }, 5000);
       }
     } catch (err) {
       console.error(err);
       if (statusEl) {
         statusEl.textContent = 'Error saving: ' + err.message;
         statusEl.className   = 'upload-status upload-status--error';
-        statusEl.style.display = 'block';
       }
     }
   }
@@ -1691,7 +1693,21 @@
   /* ============================================================
      INIT ADMIN PANEL
      ============================================================ */
-  function initAdmin() {
+  async function initAdmin() {
+    // Always load live data from GitHub before rendering any UI.
+    // The CDN-served content.js can be minutes stale after a save,
+    // so reading window.SCP directly would show outdated state.
+    showBanner('Loading\u2026', 'loading');
+    try {
+      var result = await readContentFile();
+      window.SCP = result.data;
+      var banner = document.getElementById('deploy-banner');
+      if (banner) banner.style.display = 'none';
+    } catch (err) {
+      console.error('initAdmin: could not load from GitHub', err);
+      showBanner('Warning: Could not load latest data from GitHub. Check your token. Showing cached version.', 'error');
+    }
+
     initTabs();
     initHomeHighlights();
     initCategoriesAdmin();
