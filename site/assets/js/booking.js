@@ -7,9 +7,9 @@
      Sign up at https://www.emailjs.com/ to get your service ID,
      template ID, and public key.
      ============================================================ */
-  var EMAILJS_SERVICE_ID  = 'YOUR_SERVICE_ID';
-  var EMAILJS_TEMPLATE_ID = 'YOUR_TEMPLATE_ID';
-  var EMAILJS_PUBLIC_KEY  = 'YOUR_PUBLIC_KEY';
+  var EMAILJS_SERVICE_ID  = 'service_qmjj90d';
+  var EMAILJS_TEMPLATE_ID = 'template_hwsf0sr';
+  var EMAILJS_PUBLIC_KEY  = 'B96025OtQvB7_kfFF';
 
   /* ============================================================
      STATE
