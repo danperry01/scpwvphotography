@@ -17,10 +17,6 @@ window.SCP = /* DATA_START */
       {
         "id": "portrait",
         "label": "Portrait"
-      },
-      {
-        "id": "nature",
-        "label": "Nature"
       }
     ],
     "photos": [
