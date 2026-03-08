@@ -25,12 +25,6 @@ window.SCP = /* DATA_START */
         "alt": "Guard dribbles upcourt during pregame warmups",
         "category": "sports",
         "featured": true
-      },
-      {
-        "src": "assets/images/gallery/sports/screenshot-2026-03-08-at-2-47-46-pm-1772995675268.jpg",
-        "alt": "test",
-        "category": "sports",
-        "featured": true
       }
     ]
   },
@@ -41,7 +35,7 @@ window.SCP = /* DATA_START */
       "price": "100",
       "pricePrefix": "From $",
       "image": "assets/images/gallery/sports/sports-cover.jpg",
-      "description": "Built for athletes who want their game documented at its best. Sessions focus on individual and team shots that highlight strength, movement, and personality ÃÂ¢ÃÂÃÂ ideal for recruiting profiles and athletic portfolios."
+      "description": "Built for athletes who want their game documented at its best. Sessions focus on individual and team shots that highlight strength, movement, and personality ÃÂÃÂ¢ÃÂÃÂÃÂÃÂ ideal for recruiting profiles and athletic portfolios."
     },
     {
       "id": "formal",
@@ -49,7 +43,7 @@ window.SCP = /* DATA_START */
       "price": "75",
       "pricePrefix": "From $",
       "image": "assets/images/gallery/formal/formal-cover.jpg",
-      "description": "Capture one of the most memorable nights of high school. These sessions highlight outfits, friendships, and the excitement of the evening ÃÂ¢ÃÂÃÂ individual portraits, couples, and group shots in a polished, timeless style."
+      "description": "Capture one of the most memorable nights of high school. These sessions highlight outfits, friendships, and the excitement of the evening ÃÂÃÂ¢ÃÂÃÂÃÂÃÂ individual portraits, couples, and group shots in a polished, timeless style."
     },
     {
       "id": "senior",
