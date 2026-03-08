@@ -360,10 +360,6 @@
     updateStepIndicators(1);
   }
 
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', init);
-  } else {
-    init();
-  }
+  document.addEventListener('scp:ready', init);
 
 }());
