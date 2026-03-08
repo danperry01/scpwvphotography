@@ -478,17 +478,26 @@
     uploadBtn.addEventListener('click', addGalleryPhoto);
   }
 
+  function setGalleryStatus(msg, isError) {
+    var el = document.getElementById('gallery-status');
+    if (!el) return;
+    el.textContent = msg;
+    el.className   = 'upload-status' + (isError ? ' upload-status--error' : ' upload-status--ok');
+    el.style.display = msg ? 'block' : 'none';
+  }
+
   async function addGalleryPhoto() {
     if (!gallerySelectedFile) return;
 
-    var category = document.getElementById('gallery-category').value;
-    var alt      = document.getElementById('gallery-alt').value.trim();
-    var featured = document.getElementById('gallery-featured').checked;
+    var category  = document.getElementById('gallery-category').value;
+    var alt       = document.getElementById('gallery-alt').value.trim();
+    var featured  = document.getElementById('gallery-featured').checked;
     var uploadBtn = document.getElementById('add-gallery-photo');
 
     hideError('gallery-error');
-    uploadBtn.disabled = true;
-    showBanner('Uploading photo...', 'loading');
+    setGalleryStatus('');
+    uploadBtn.disabled    = true;
+    uploadBtn.textContent = 'Step 1/2: Uploading image…';
 
     try {
       var originalName = gallerySelectedFile.name;
@@ -500,6 +509,8 @@
       var path = 'site/assets/images/gallery/' + category + '/' + filename;
 
       await uploadImage(path, gallerySelectedFile);
+
+      uploadBtn.textContent = 'Step 2/2: Saving changes…';
 
       var result = await readContentFile();
       var data   = result.data;
@@ -523,14 +534,15 @@
       if (!window.SCP.gallery.photos) window.SCP.gallery.photos = [];
       window.SCP.gallery.photos.push(newPhoto);
 
-      showBanner('Photo added! Site deploying...', 'success');
+      setGalleryStatus('✓ Photo saved! The site is rebuilding — changes will appear in about 2 minutes.');
       resetGalleryForm();
       renderGalleryGrid();
     } catch (err) {
       console.error(err);
-      showBanner('Error: ' + err.message, 'error');
+      setGalleryStatus('Upload failed: ' + err.message, true);
       showError('gallery-error', err.message);
-      uploadBtn.disabled = false;
+      uploadBtn.disabled    = false;
+      uploadBtn.textContent = 'Upload Photo';
     }
   }
 
@@ -549,7 +561,7 @@
     if (previewWrap) previewWrap.style.display  = 'none';
     if (previewImg)  previewImg.src = '';
     if (altInput)    altInput.value = '';
-    if (uploadBtn)   uploadBtn.disabled = true;
+    if (uploadBtn)   { uploadBtn.disabled = true; uploadBtn.textContent = 'Upload Photo'; }
     if (featuredCb)  featuredCb.checked = false;
   }
 

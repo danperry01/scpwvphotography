@@ -659,6 +659,29 @@
 }
 
 /* ============================================================
+   UPLOAD STATUS MESSAGE
+   ============================================================ */
+.upload-status {
+  font-size: 0.875rem;
+  font-family: var(--font-sans);
+  padding: 0.6rem 0.9rem;
+  border-radius: var(--radius);
+  margin-top: 0.5rem;
+}
+
+.upload-status--ok {
+  background: rgba(22, 163, 74, 0.1);
+  color: #15803d;
+  border: 1px solid rgba(22, 163, 74, 0.25);
+}
+
+.upload-status--error {
+  background: rgba(220, 38, 38, 0.08);
+  color: #dc2626;
+  border: 1px solid rgba(220, 38, 38, 0.2);
+}
+
+/* ============================================================
    RESPONSIVE
    ============================================================ */
 @media (max-width: 640px) {
