@@ -208,6 +208,14 @@ window.SCP = /* DATA_START */
       "pricePrefix": "From $",
       "image": "assets/images/gallery/portrait/portrait-cover.jpg",
       "description": "Perfect for capturing everyday moments and meaningful connections. Individuals, families, friends, and couples welcome. The goal is natural, relaxed images that reflect genuine personality and the relationships that matter most."
+    },
+    {
+      "id": "game-day-experience",
+      "name": "Game Day Experience",
+      "price": "100",
+      "pricePrefix": "$",
+      "image": "",
+      "description": ""
     }
   ],
   "packages": [
