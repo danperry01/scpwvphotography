@@ -214,7 +214,7 @@ window.SCP = /* DATA_START */
       "name": "Game Day Experience",
       "price": "185",
       "pricePrefix": "$",
-      "image": "",
+      "image": "assets/images/gallery/game-day-experience/game-day-experience-cover.jpg",
       "description": "• Pregame warm-up coverage\n• In-game shots of all participating players\n• Delivered as a complete game-day gallery\n• Ideal for teams and athletic programs"
     },
     {
