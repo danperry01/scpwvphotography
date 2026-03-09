@@ -224,6 +224,14 @@ window.SCP = /* DATA_START */
       "pricePrefix": "$",
       "image": "",
       "description": "• Group photos before the event\n• Couples and individual portraits\n• Polished, evening-ready editing\n• Perfect for prom and homecoming"
+    },
+    {
+      "id": "event-coverage",
+      "name": "Event Coverage",
+      "price": "100",
+      "pricePrefix": "$",
+      "image": "",
+      "description": ""
     }
   ],
   "packages": [
