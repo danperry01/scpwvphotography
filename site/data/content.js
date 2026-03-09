@@ -197,7 +197,7 @@ window.SCP = /* DATA_START */
       "id": "senior",
       "name": "Senior Session",
       "price": "125",
-      "pricePrefix": "$",
+      "pricePrefix": "From $",
       "image": "assets/images/gallery/senior/senior-cover.jpg",
       "description": "Senior sessions celebrate one of life's biggest milestones. With a mix of natural poses and creative direction, these sessions are designed to capture your personality, style, and achievements as you step into the next chapter."
     },
