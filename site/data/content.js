@@ -220,10 +220,10 @@ window.SCP = /* DATA_START */
     {
       "id": "group-formal-dance",
       "name": "Group Formal Dance",
-      "price": "100",
+      "price": "150",
       "pricePrefix": "$",
       "image": "",
-      "description": ""
+      "description": "• Group photos before the event\n• Couples and individual portraits\n• Polished, evening-ready editing\n• Perfect for prom and homecoming"
     }
   ],
   "packages": [
