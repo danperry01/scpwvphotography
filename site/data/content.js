@@ -222,7 +222,7 @@ window.SCP = /* DATA_START */
       "name": "Group Formal Dance",
       "price": "150",
       "pricePrefix": "$",
-      "image": "",
+      "image": "assets/images/gallery/group-formal-dance/group-formal-dance-cover.jpeg",
       "description": "• Group photos before the event\n• Couples and individual portraits\n• Polished, evening-ready editing\n• Perfect for prom and homecoming"
     },
     {
