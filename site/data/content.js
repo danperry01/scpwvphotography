@@ -216,6 +216,14 @@ window.SCP = /* DATA_START */
       "pricePrefix": "$",
       "image": "",
       "description": "• Pregame warm-up coverage\n• In-game shots of all participating players\n• Delivered as a complete game-day gallery\n• Ideal for teams and athletic programs"
+    },
+    {
+      "id": "group-formal-dance",
+      "name": "Group Formal Dance",
+      "price": "100",
+      "pricePrefix": "$",
+      "image": "",
+      "description": ""
     }
   ],
   "packages": [
