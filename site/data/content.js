@@ -205,7 +205,7 @@ window.SCP = /* DATA_START */
       "id": "portrait",
       "name": "Portrait Session",
       "price": "100",
-      "pricePrefix": "$",
+      "pricePrefix": "From $",
       "image": "assets/images/gallery/portrait/portrait-cover.jpg",
       "description": "Perfect for capturing everyday moments and meaningful connections. Individuals, families, friends, and couples welcome. The goal is natural, relaxed images that reflect genuine personality and the relationships that matter most."
     }
