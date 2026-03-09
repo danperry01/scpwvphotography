@@ -230,7 +230,7 @@ window.SCP = /* DATA_START */
       "name": "Event Coverage",
       "price": "150",
       "pricePrefix": "$",
-      "image": "",
+      "image": "assets/images/gallery/event-coverage/event-coverage-cover.jpeg",
       "description": "• Birthdays, parties, and ceremonies\n• Candid and posed coverage\n• Full event gallery delivered\n• Flexible to any event format"
     }
   ],
