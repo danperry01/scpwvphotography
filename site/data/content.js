@@ -91,12 +91,6 @@ window.SCP = /* DATA_START */
         "featured": false
       },
       {
-        "src": "assets/images/gallery/nature/img-3586-1773002272302.jpg",
-        "alt": "img-3586-1773002272302.jpg",
-        "category": "nature",
-        "featured": false
-      },
-      {
         "src": "assets/images/gallery/nature/img-4556-1773002368402.jpg",
         "alt": "img-4556-1773002368402.jpg",
         "category": "nature",
