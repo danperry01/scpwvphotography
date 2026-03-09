@@ -228,10 +228,10 @@ window.SCP = /* DATA_START */
     {
       "id": "event-coverage",
       "name": "Event Coverage",
-      "price": "100",
+      "price": "150",
       "pricePrefix": "$",
       "image": "",
-      "description": ""
+      "description": "• Birthdays, parties, and ceremonies\n• Candid and posed coverage\n• Full event gallery delivered\n• Flexible to any event format"
     }
   ],
   "packages": [
