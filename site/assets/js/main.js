@@ -133,8 +133,13 @@
     if (!grid) return;
     if (!window.SCP || !window.SCP.services) return;
 
+    var HOME_SERVICE_IDS = ['sports', 'formal', 'senior', 'portrait'];
+    var homeServices = window.SCP.services.filter(function (s) {
+      return HOME_SERVICE_IDS.indexOf(s.id) !== -1;
+    });
+
     var html = '';
-    window.SCP.services.forEach(function (service) {
+    homeServices.forEach(function (service) {
       html += [
         '<div class="service-card">',
         '  <img src="' + service.image + '" alt="' + service.name + '" class="service-card__img">',
