@@ -304,7 +304,7 @@ window.SCP = /* DATA_START */
       "date": "",
       "description": "",
       "cover": "",
-      "isPublic": false,
+      "isPublic": true,
       "key": "h0istbck",
       "photos": []
     }
