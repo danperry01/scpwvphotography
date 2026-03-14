@@ -275,10 +275,59 @@ window.SCP = /* DATA_START */
       "name": "Marshall Summers",
       "date": "2026-03-11",
       "description": "Midland vs Huntington",
-      "cover": "",
+      "cover": "assets/images/collections/marshall-summers-f7sn/img-5759-1773453847574-0.jpg",
       "isPublic": false,
       "key": "py19b29h",
-      "photos": []
+      "photos": [
+        {
+          "src": "assets/images/collections/marshall-summers-f7sn/img-5759-1773453847574-0.jpg",
+          "alt": "img-5759-1773453847574-0.jpg"
+        },
+        {
+          "src": "assets/images/collections/marshall-summers-f7sn/img-5754-1773453851503-1.jpg",
+          "alt": "img-5754-1773453851503-1.jpg"
+        },
+        {
+          "src": "assets/images/collections/marshall-summers-f7sn/img-5721-1773453853654-2.jpg",
+          "alt": "img-5721-1773453853654-2.jpg"
+        },
+        {
+          "src": "assets/images/collections/marshall-summers-f7sn/img-5651-1773453855906-3.jpg",
+          "alt": "img-5651-1773453855906-3.jpg"
+        },
+        {
+          "src": "assets/images/collections/marshall-summers-f7sn/img-5616-1773453858569-4.jpg",
+          "alt": "img-5616-1773453858569-4.jpg"
+        },
+        {
+          "src": "assets/images/collections/marshall-summers-f7sn/img-5594-1773453861132-5.jpg",
+          "alt": "img-5594-1773453861132-5.jpg"
+        },
+        {
+          "src": "assets/images/collections/marshall-summers-f7sn/img-5591-1773453864200-6.jpg",
+          "alt": "img-5591-1773453864200-6.jpg"
+        },
+        {
+          "src": "assets/images/collections/marshall-summers-f7sn/img-5355-1773453866385-7.jpg",
+          "alt": "img-5355-1773453866385-7.jpg"
+        },
+        {
+          "src": "assets/images/collections/marshall-summers-f7sn/img-5584-1773453868605-8.jpg",
+          "alt": "img-5584-1773453868605-8.jpg"
+        },
+        {
+          "src": "assets/images/collections/marshall-summers-f7sn/img-5554-1773453871063-9.jpg",
+          "alt": "img-5554-1773453871063-9.jpg"
+        },
+        {
+          "src": "assets/images/collections/marshall-summers-f7sn/img-5462-1773453873623-10.jpg",
+          "alt": "img-5462-1773453873623-10.jpg"
+        },
+        {
+          "src": "assets/images/collections/marshall-summers-f7sn/img-5430-1773453876079-11.jpg",
+          "alt": "img-5430-1773453876079-11.jpg"
+        }
+      ]
     }
   ]
 }
