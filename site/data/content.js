@@ -245,7 +245,7 @@ window.SCP = /* DATA_START */
       "date": "2026-03-11",
       "description": "Midland vs Huntington",
       "cover": "assets/images/collections/marshall-summers-f7sn/img-5759-1773453847574-0.jpg",
-      "isPublic": true,
+      "isPublic": false,
       "key": "py19b29h",
       "photos": [
         {
