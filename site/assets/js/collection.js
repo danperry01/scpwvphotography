@@ -264,7 +264,43 @@
     var dlBtn = document.getElementById('download-all-btn');
     if (dlBtn) {
       dlBtn.addEventListener('click', function () {
-        alert('Contact SCP Photography to request your full resolution files.');
+        if (!photos.length) return;
+        dlBtn.disabled = true;
+        dlBtn.textContent = 'Preparing download (0/' + photos.length + ')…';
+
+        var zip = new JSZip();
+        var completed = 0;
+
+        Promise.all(photos.map(function (photo, i) {
+          return fetch(photo.src)
+            .then(function (r) { return r.blob(); })
+            .then(function (blob) {
+              var name = photo.src.split('/').pop() || ('photo-' + (i + 1) + '.jpg');
+              zip.file(name, blob);
+              completed++;
+              dlBtn.textContent = 'Preparing download (' + completed + '/' + photos.length + ')…';
+            });
+        }))
+        .then(function () {
+          dlBtn.textContent = 'Zipping…';
+          return zip.generateAsync({ type: 'blob' });
+        })
+        .then(function (blob) {
+          var a = document.createElement('a');
+          a.href = URL.createObjectURL(blob);
+          a.download = (collection.name || 'collection') + '.zip';
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+          URL.revokeObjectURL(a.href);
+          dlBtn.textContent = 'Download All Photos';
+          dlBtn.disabled = false;
+        })
+        .catch(function (err) {
+          console.error('Download failed:', err);
+          dlBtn.textContent = 'Download failed — try again';
+          dlBtn.disabled = false;
+        });
       });
     }
   }
