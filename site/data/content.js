@@ -303,10 +303,15 @@ window.SCP = /* DATA_START */
       "name": "test 2.0",
       "date": "",
       "description": "",
-      "cover": "",
+      "cover": "assets/images/collections/test-2-0-v4zw/img-3516-2-1773454680905-0.jpg",
       "isPublic": true,
       "key": "h0istbck",
-      "photos": []
+      "photos": [
+        {
+          "src": "assets/images/collections/test-2-0-v4zw/img-3516-2-1773454680905-0.jpg",
+          "alt": "img-3516-2-1773454680905-0.jpg"
+        }
+      ]
     }
   ]
 }
