@@ -297,6 +297,16 @@ window.SCP = /* DATA_START */
           "alt": "img-5430-1773453876079-11.jpg"
         }
       ]
+    },
+    {
+      "id": "test-2-0-v4zw",
+      "name": "test 2.0",
+      "date": "",
+      "description": "",
+      "cover": "",
+      "isPublic": false,
+      "key": "h0istbck",
+      "photos": []
     }
   ]
 }
