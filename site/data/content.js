@@ -240,37 +240,6 @@ window.SCP = /* DATA_START */
   ],
   "collections": [
     {
-      "id": "test-6jhm",
-      "name": "test",
-      "date": "2026-03-10",
-      "description": "",
-      "cover": "assets/images/collections/test-6jhm/screenshot-2026-03-08-at-12-47-03-pm-1773002059538-0.jpg",
-      "isPublic": true,
-      "key": "0b1tas6m",
-      "photos": [
-        {
-          "src": "assets/images/collections/test-6jhm/screenshot-2026-03-08-at-12-47-03-pm-1773002059538-0.jpg",
-          "alt": "screenshot-2026-03-08-at-12-47-03-pm-1773002059538-0.jpg"
-        },
-        {
-          "src": "assets/images/collections/test-6jhm/screenshot-2026-03-08-at-12-47-09-pm-1773002060417-1.jpg",
-          "alt": "screenshot-2026-03-08-at-12-47-09-pm-1773002060417-1.jpg"
-        },
-        {
-          "src": "assets/images/collections/test-6jhm/screenshot-2026-03-08-at-12-47-14-pm-1773002061225-2.jpg",
-          "alt": "screenshot-2026-03-08-at-12-47-14-pm-1773002061225-2.jpg"
-        },
-        {
-          "src": "assets/images/collections/test-6jhm/screenshot-2026-03-08-at-12-47-17-pm-1773002062031-3.jpg",
-          "alt": "screenshot-2026-03-08-at-12-47-17-pm-1773002062031-3.jpg"
-        },
-        {
-          "src": "assets/images/collections/test-6jhm/screenshot-2026-03-08-at-12-47-17-pm-1773002233207-0.jpg",
-          "alt": "screenshot-2026-03-08-at-12-47-17-pm-1773002233207-0.jpg"
-        }
-      ]
-    },
-    {
       "id": "marshall-summers-f7sn",
       "name": "Marshall Summers",
       "date": "2026-03-11",
